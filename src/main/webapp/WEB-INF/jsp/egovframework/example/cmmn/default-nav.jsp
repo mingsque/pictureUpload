@@ -52,7 +52,7 @@
 <header id="header" class="border">
 	<nav class="first">
 		<ul>
-			<li>로그인</li>
+			<li><a href="login.do">로그인</a></li>
 
 			<li>회원가입</li>
 
@@ -65,7 +65,7 @@
 			<li>관심상품</li>
 
 			<li>공지사항</li>
-
+			
 			<li>즐겨찾기</li>
 		</ul>
 	</nav>
