@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.example.category.service.impl.CategoryMapper">
+	
+	<sql id="search">
+		WHERE 1=1
+	</sql>
+	
+	<select id="getCategoryList" resultType="categoryVO" parameterType="categoryVO">
+		SELECT * FROM CATEGORY_TB
+		<include refid="search"/>
+		ORDER BY REGIST_DATE DESC
+	</select>
+	
+	<select id="getCategoryListUsr" resultType="categoryVO" parameterType="categoryVO">
+		SELECT * FROM CATEGORY_TB
+		WHERE IS_USED = 'Y'
+		ORDER BY SNO ASC
+	</select>
+	 
+	<select id="getSmallCategoryListUsr" resultType="categoryVO" parameterType="categoryVO">
+		SELECT * FROM SMALL_CATEGORY_TB
+		WHERE IS_USED = 'Y'
+		ORDER BY SNO ASC
+	</select>
+	
+	<insert id="insertCategory" parameterType="categoryVO">
+		INSERT INTO CATEGORY_TB (
+				CATEGORY_NAME
+			,	REGIST_DATE
+			,	CHANGE_DATE
+			,	IS_USED
+			,	SNO
+		) VALUES (
+				#{category_Name}
+			,	NOW()
+			,	NOW()
+			,	#{is_Used}
+			,	#{sno}
+		)
+		<selectKey resultType="integer" keyProperty="seq_No" order="AFTER">
+		    SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	 
+	<update id="updateCategory" parameterType="categoryVO">
+		UPDATE CATEGORY_TB SET
+				CATEGORY_NAME = #{category_Name}
+			,	IS_USED		  = #{is_Used}
+			,	SNO			  = #{sno}
+		WHERE SEQ_NO = #{seq_No}
+	</update>
+	
+	<delete id="deleteCategory" parameterType="Integer">
+		DELETE FROM CATEGORY_TB WHERE SEQ_NO = #{no}
+	</delete>
+	
+	<select id="getSmallCategoryList" resultType="categoryVO" parameterType="categoryVO">
+		SELECT  
+				SMALL_CATEGORY_TB.*
+			,	CATEGORY_TB.CATEGORY_NAME AS PARENT_NAME
+		FROM SMALL_CATEGORY_TB 
+		LEFT JOIN CATEGORY_TB ON 
+		SMALL_CATEGORY_TB.CATEGORY_FK = CATEGORY_TB.SEQ_NO 
+	</select>
+	 
+	<insert id="insertSmallCategory" parameterType="categoryVO">
+		INSERT INTO SMALL_CATEGORY_TB (
+				CATEGORY_NAME
+			,	CATEGORY_FK
+			,	REGIST_DATE
+			,	CHANGE_DATE
+			,	IS_USED
+			,	SNO
+		) VALUES (
+				#{category_Name}
+			,	#{category_Fk}
+			,	now()
+			,	now()
+			,	#{is_Used}
+			,	#{sno}
+		)
+		<selectKey resultType="integer" keyProperty="seq_No" order="AFTER">
+		    SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	  
+	<update id="updateSmallCategory" parameterType="categoryVO">
+		UPDATE SMALL_CATEGORY_TB SET 
+				CATEGORY_NAME	=	#{category_Name}
+			,	CATEGORY_FK		=	#{category_Fk}
+			,	CHANGE_DATE		=	now()
+			,	IS_USED			=	#{is_Used}
+			,	SNO				=	#{sno}
+		WHERE SEQ_NO	=	#{seq_No}
+	</update>
+	 
+	<delete id="deleteSmallCategory" parameterType="Integer">
+		DELETE FROM SMALL_CATEGORY_TB WHERE SEQ_NO = #{no}
+	</delete>
+	
+</mapper>

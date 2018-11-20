@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC 
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	<definition name="layouts-tiles"
+		template="/WEB-INF/jsp/egovframework/example/cmmn/default-layouts.jsp">
+		<put-attribute name="header"
+			value="/WEB-INF/jsp/egovframework/example/cmmn/default-header.jsp" />
+		<put-attribute name="nav"
+			value="/WEB-INF/jsp/egovframework/example/cmmn/default-nav.jsp" />
+		<put-attribute name="content" value="" />
+		<put-attribute name="footer"
+			value="/WEB-INF/jsp/egovframework/example/cmmn/default-footer.jsp" />
+	</definition>
+
+	<definition name="*/*.tiles" extends="layouts-tiles">
+		<put-attribute name="content"
+			value="/WEB-INF/jsp/egovframework/example/{1}/{2}.jsp" />
+	</definition>
+	
+	<definition name="layouts-manage" template="/WEB-INF/jsp/egovframework/example/cmmn/manage-layouts.jsp">
+	  	<put-attribute name="header"    	value="/WEB-INF/jsp/egovframework/example/cmmn/manage-header.jsp" />
+	  	<put-attribute name="left"    		value="/WEB-INF/jsp/egovframework/example/cmmn/manage-left.jsp" />
+	  	<put-attribute name="nav"    		value="/WEB-INF/jsp/egovframework/example/cmmn/manage-nav.jsp" />
+	  	<put-attribute name="content"   	value="" />
+	  	<put-attribute name="slide"    		value="/WEB-INF/jsp/egovframework/example/cmmn/manage-slide.jsp" />
+	  	<put-attribute name="script"    	value="/WEB-INF/jsp/egovframework/example/cmmn/manage-script.jsp" />
+	</definition>
+	
+	
+	
+	<definition name="*/*/*.manage" extends="layouts-manage">
+	  	<put-attribute name="content"   value="/WEB-INF/jsp/egovframework/example/{1}/{2}/{3}.jsp" />
+	</definition>
+	
+	
+	<definition name="layouts-popup"
+		template="/WEB-INF/jsp/egovframework/example/cmmn/popup-layouts.jsp">
+	  	<put-attribute name="content"   	value="" />
+	</definition>
+	
+	<definition name="*/*.pop" extends="layouts-popup">
+	  	<put-attribute name="content"   value="/WEB-INF/jsp/egovframework/example/{1}/{2}.jsp" />
+	</definition>
+	
+	
+</tiles-definitions>

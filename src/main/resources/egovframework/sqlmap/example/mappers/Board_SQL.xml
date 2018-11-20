@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.example.board.service.impl.BoardMapper">
+
+	<select id="selectQnaBoardList" parameterType="pagingVO" resultType="egovMap">
+		SELECT AA.*
+		FROM (
+			SELECT A.*, floor( (A.RNUM-1) /#{rows} + 1 ) as pageNumber
+			FROM
+				(SELECT * , @rnum := @rnum + 1 as RNUM , date_format(moddate, '%Y.%m.%d %H:%i') as remoddate
+				FROM qnaboard_tb, (SELECT @rnum := 0) R
+				WHERE USEYN = 'Y'
+				ORDER BY no desc) A
+		) AA
+		WHERE AA.pageNumber = #{page}
+		
+	</select>
+
+	<select id="selectQnaBoardListCnt" parameterType="pagingVO" resultType="egovMap">
+		SELECT	count(*) as TOTAL_CNT , CEIL(COUNT(*)/#{rows}) AS TOTAL_PAGE
+		FROM	qnaboard_tb
+		WHERE	USEYN = 'y'
+	</select>
+
+	<select id="selectQnaBoardDetail" parameterType="String"  resultType="egovMap">
+		SELECT	NO,
+			  	TITLE,
+			  	CONTENT,
+			  	WRITER,
+			  	USEYN,
+			  	REGDATE,
+			  	MODDATE,
+			  	date_format(moddate, '%Y.%m.%d %H:%i') as remoddate
+		FROM	QNABOARD_TB
+		WHERE	NO = #{_parameter};	
+	</select>
+
+	
+	<update id="updateQnaBoard" parameterType="egovMap">
+		UPDATE	QNABOARD_TB
+		SET	  	TITLE	= #{title},
+			  	CONTENT = #{content}
+			  	
+		WHERE	NO		= #{no};
+			
+	</update>
+	
+	<insert id="insertQnaBoard" parameterType="egovMap">
+		INSERT INTO QNABOARD_TB (
+			TITLE,
+			CONTENT,
+			WRITER
+		) VALUES (
+			#{title},
+			#{content},
+			#{writer}
+		)
+	</insert>
+	
+	<update id="deleteQnaBoard" parameterType="egovMap">
+		UPDATE	QNABOARD_TB
+		SET	  	USEYN	= 'N'
+		WHERE	NO		= #{no};
+			
+	</update>
+
+
+	<insert id="insertQnaboardReply" parameterType="egovMap">
+		INSERT INTO QNABOARD_REPLY_TB (
+			BOARD_NO,
+			WRITER,
+			CONTENT
+		) VALUES (
+			#{no},
+			#{writer},
+			#{content}
+		)
+	</insert>
+
+	<select id="selectQnaBoardReplyList" parameterType="String" resultType="egovMap">
+		SELECT 
+			WRITER,
+			CONTENT,
+			SEQ_NO
+		FROM 
+			QNABOARD_REPLY_TB
+		WHERE
+			BOARD_NO = #{parameter} AND
+			USEYN = 'Y';
+	
+	</select>
+	
+	<update id="deleteQnaBoardReply" parameterType="egovMap">
+		UPDATE	QNABOARD_REPLY_TB
+		SET	  	USEYN	= 'N'
+		WHERE	SEQ_NO	= #{seqNo};
+			
+	</update>
+	
+	<select id="selectAllFaqList" resultType="egovMap">
+		SELECT SEQ_NO,
+			   TITLE,
+			   CONTENT,
+			   VIEW
+		FROM T_BOARD_FAQ	
+	</select>
+
+	<select id="selectCheckFaqList" resultType="egovMap" parameterType="String">
+		SELECT SEQ_NO,
+			   TITLE,
+			   CONTENT,
+			   VIEW
+		FROM T_BOARD_FAQ
+		<where>
+			<if test="_parameter != null and _parameter != ''">
+				SEQ_NO = #{_parameter}
+			</if>
+		</where>
+	</select>
+	
+	<update id="updateFaq" parameterType="map">
+		UPDATE T_BOARD_FAQ SET
+				TITLE = #{title},
+				CONTENT = #{content}
+		WHERE SEQ_NO = #{seqNo}		
+	</update>
+	
+	<insert id="insertFaq" parameterType="map">
+		INSERT INTO T_BOARD_FAQ (
+			TITLE,
+			CONTENT
+		) VALUES (
+			#{title},
+			#{content}
+		)
+	</insert>
+
+	<delete id="deleteFaq" parameterType="Integer">
+		DELETE FROM T_BOARD_FAQ WHERE SEQ_NO = #{seqNo}
+	</delete>
+
+	<select id="selectMngPsList" >
+	
+	</select>	
+	
+</mapper>

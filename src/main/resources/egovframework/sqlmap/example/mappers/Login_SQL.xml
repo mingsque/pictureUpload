@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.example.login.service.impl.LoginMapper">
+
+	<select id="selectLoginResultList" resultType="userVO">
+		SELECT	ID,
+				PASSWORD,
+				NAME,
+				E_MAIL,
+				PHONE_NUMBER
+		FROM USER_TB
+	</select>
+	
+	<insert id="selectRegisterResultService" parameterType="userVO">
+	
+		INSERT INTO USER_TB(		
+			ID,
+			PASSWORD,
+			NAME,
+			E_MAIL,
+			PHONE_NUMBER,
+			SEX,
+			POST_NUMBER,
+			ADDRESS_DETAIL,
+			ADDRESS
+			)
+		 
+		VALUES (
+			#{id},
+			#{password},
+			#{name},
+			#{e_mail},
+			#{phone_number},
+			#{sex},
+			#{post_number},
+			#{address_detail},
+			#{address}
+		);
+	</insert>
+	
+	<update id="updateUserInfo" parameterType="userVO">
+	
+		UPDATE USER_TB 
+		
+		SET		
+			PASSWORD 		= #{password},
+			NAME			= #{name},
+			E_MAIL			= #{e_mail},
+			PHONE_NUMBER 	= #{phone_number},
+			SEX				= #{sex},
+			POST_NUMBER 	= #{post_number},
+			ADDRESS_DETAIL 	= #{address_detail},
+			ADDRESS 		= #{address}
+		
+		WHERE ID = #{id};
+	</update>
+	
+	
+	
+
+	<select id="selectRegisterResultServiceList" resultType="egovMap">
+		SELECT	ID
+		FROM USER_TB
+	</select>
+	
+	<select id="selectUserInfo" parameterType="String" resultType="userVO">
+		SELECT	ID,
+				PASSWORD,
+				NAME,
+				E_MAIL,
+				PHONE_NUMBER,
+				ADDRESS,
+				ADDRESS_DETAIL,
+				POST_NUMBER,
+				SEX
+		FROM USER_TB
+		
+		<where>
+			<if test="_parameter != null and _parameter!= ''">
+				ID = #{_parameter}
+			</if>	
+		</where>	
+	</select>
+<!-- 
+	<select id="selectLoginResultService" parameterType="egovMap" resultType="egovMap">
+		SELECT	ID,
+				PASSWORD,
+				NAME,
+				E_MAIL,
+				PHONE_NUMBER
+		FROM USER_TB
+	
+		<where>
+			<if test="id != null and id != ''">
+				ID = #{id} AND PASSWORD = #{password}
+			</if>
+		</where>
+	</select>
+ -->
+</mapper>

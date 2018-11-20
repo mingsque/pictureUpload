@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.example.board.service.impl.BoardMapper">
+
+	<select id="selectNoticeBoardList" resultType="egovMap">
+		SELECT SEQ_NO,
+			   ID,
+			   TITLE,
+			   CONTENT,
+			   VIEW_CNT
+		FROM T_BOARD_NOTICE	
+	</select>
+	
+	<select id="selectNoticeBoardView" resultType="egovMap" parameterType="String">
+		SELECT SEQ_NO,
+			   ID,
+			   TITLE,
+			   CONTENT,
+			   VIEW_CNT
+		FROM T_BOARD_NOTICE	
+		
+		<where>
+			<if test="_parameter != null and _parameter != ''">
+				SEQ_NO = #{_parameter}
+			</if>
+		</where>
+		
+	</select>
+	
+	<select id="selectAllNoticeList" resultType="egovMap">
+		SELECT	SEQ_NO,
+				ID,
+				TITLE,
+			    CONTENT,
+			    VIEW_CNT
+		FROM T_BOARD_NOTICE	
+	</select>
+</mapper>

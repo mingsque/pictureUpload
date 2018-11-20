@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.example.product.service.impl.ProductMapper">
+	
+	<sql id="search">
+		WHERE 1=1
+	</sql>
+	
+	<insert id="insertProduct" parameterType="productVO">
+		INSERT INTO PRODUCT_TB (
+				CATEGORY_FK
+			,	SMALL_CATEGORY_FK	
+			,	PRODUCT_NAME
+			,	PRODUCT_SIZE
+			,	PRODUCT_COLOR
+			,	PRODUCT_CNT
+			,	IMAGEFILE
+			,	REGISTDATE
+			,	UPDATEDATE
+		) VALUES (
+				#{category_Fk}
+			,	#{small_Category_Fk}
+			,	#{product_Name}
+			,	#{product_Size}
+			,	#{product_Color}
+			,	#{product_Cnt}
+			,	#{imagefile}
+			,	NOW()
+			,	NOW()
+		)
+		<selectKey resultType="integer" keyProperty="seq_No" order="AFTER">
+		    SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	 
+	<update id="updateProduct" parameterType="productVO">
+		UPDATE PRODUCT_TB SET 
+				CATEGORY_FK			=	#{category_Fk}
+			,	SMALL_CATEGORY_FK	=	#{small_Category_Fk}
+			,	PRODUCT_NAME		=	#{product_Name}
+			,	PRODUCT_SIZE		=	#{product_Size}
+			,	PRODUCT_COLOR		=	#{product_Color}
+			,	PRODUCT_CNT			=	#{product_Cnt}
+			,	IMAGEFILE			=	#{imagefile}
+			,	UPDATEDATE			=	NOW()
+		WHERE SEQ_NO	=	#{seq_No}
+	</update>
+	 
+	<select id="getProductList" parameterType="productVO" resultType="productVO">
+		SELECT
+			PRODUCT_TB.* ,
+		  	CATEGORY_TB.CATEGORY_NAME AS CATEGORY_NAME, 
+			SMALL_CATEGORY_TB.CATEGORY_NAME AS SMALL_CATEGORY_NAME
+		FROM
+			PRODUCT_TB
+			LEFT JOIN CATEGORY_TB ON CATEGORY_TB.SEQ_NO = PRODUCT_TB.CATEGORY_FK
+			LEFT JOIN SMALL_CATEGORY_TB ON SMALL_CATEGORY_TB.SEQ_NO = PRODUCT_TB.SMALL_CATEGORY_FK
+		ORDER BY PRODUCT_TB.REGISTDATE
+	</select>
+	 
+	<select id="readProduct" parameterType="Integer" resultType="productVO">
+		SELECT
+			PRODUCT_TB.* ,
+		  	CATEGORY_TB.CATEGORY_NAME AS CATEGORY_NAME, 
+			SMALL_CATEGORY_TB.CATEGORY_NAME AS SMALL_CATEGORY_NAME
+		FROM
+			PRODUCT_TB
+			LEFT JOIN CATEGORY_TB ON CATEGORY_TB.SEQ_NO = PRODUCT_TB.CATEGORY_FK
+			LEFT JOIN SMALL_CATEGORY_TB ON SMALL_CATEGORY_TB.SEQ_NO = PRODUCT_TB.SMALL_CATEGORY_FK
+		WHERE PRODUCT_TB.SEQ_NO = #{no}
+		ORDER BY PRODUCT_TB.REGISTDATE 
+	</select>
+	
+	
+</mapper>
