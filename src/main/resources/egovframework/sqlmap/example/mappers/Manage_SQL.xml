@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.example.manage.service.impl.ManageMapper">
+
+	<select id="selectBikeCategoryList" resultType="EgovMap">
+			SELECT	NAME,
+					REG_DATE,
+					MOD_DATE,
+					USE_YN
+			FROM BIKE_CATEGORY_TB
+	</select>
+
+</mapper>

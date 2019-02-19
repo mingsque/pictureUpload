@@ -13,7 +13,6 @@
 
 <!-- Custom css -->
 <link rel="stylesheet" href="css/style.css">
-
 <!-- Font Awesome -->
 <link rel="stylesheet" href="css/font-awesome.min.css">
 

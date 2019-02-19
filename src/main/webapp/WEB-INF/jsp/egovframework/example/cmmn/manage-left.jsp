@@ -46,10 +46,12 @@
 								<span class="pull-right"><i class="fa fa-angle-right"></i></span>
 							</a>
 							<ul>
-								<li><a href="javascript:frmSubmit('/manage/category/index');">카테고리 관리</a></li>
+								<li><a href="javascript:frmSubmit('category/index');">카테고리 관리</a></li>
 								<li><a href="javascript:frmSubmit('/manage/product/index');">상품 관리</a></li>
-							
+								<li><a href="productRegist.do">상품 업로드</a>
 							</ul>
+							
+							
 						</li> 
 						<li class="has_submenu nblue">
 							<a href="#">

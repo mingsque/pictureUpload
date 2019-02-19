@@ -32,7 +32,8 @@
 	
 	
 	<definition name="*/*/*.manage" extends="layouts-manage">
-	  	<put-attribute name="content"   value="/WEB-INF/jsp/egovframework/example/{1}/{2}/{3}.jsp" />
+	  	<put-attribute name="content"
+	  		value="/WEB-INF/jsp/egovframework/example/{1}/{2}/{3}.jsp" />
 	</definition>
 	
 	

@@ -36,8 +36,6 @@ public class LoginController {
 	@Resource(name = "loginService")
 	private LoginService loginService;
 	
-	
-	
 	public String generateState() {
 		SecureRandom random = new SecureRandom();
 		return new BigInteger(130, random).toString(32);

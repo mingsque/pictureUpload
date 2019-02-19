@@ -1129,6 +1129,13 @@ form{
   color: #fff;
 }
 
+.widget.wblack .widget-head{
+  background-color: #000;
+  border: 1px solid #000;
+  color: #fff;
+}
+
+
 .widget.wred .widget-head .widget-icons a,
 .widget.wblue .widget-head .widget-icons a,
 .widget.wlightblue .widget-head .widget-icons a,

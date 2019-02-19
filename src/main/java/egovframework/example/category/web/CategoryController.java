@@ -31,7 +31,8 @@ public class CategoryController {
    @RequestMapping(value = "manage/category/index.do")
    public String initMain(CategoryVO param, 
 		   ModelMap model) throws Exception {
-      
+      System.out.println("..;");
+	   
 	  ArrayList<CategoryVO> list =
 			  categoryService.getCategoryList(param);
 	  

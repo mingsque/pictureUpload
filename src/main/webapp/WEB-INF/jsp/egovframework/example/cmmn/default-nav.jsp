@@ -54,7 +54,7 @@
 		<ul>
 			<li><a href="login.do">로그인</a></li>
 
-			<li>회원가입</li>
+			<li><a href="register.do">회원가입</a></li>
 
 			<li>마이페이지</li>
 
@@ -105,7 +105,9 @@
 							</ul></li>
 
 						<li><a href="manage/main.do">manage</a></li>
-
+						
+						<li><a href="pictureMain.do">picture</a></li>
+						
 						<c:choose>
 							<c:when test="${sessionScope.name eq null}">
 								<li><a href="login.do">로그인</a></li>
@@ -132,9 +134,22 @@
 			<!--  END Button for Responsive Menu  -->
 		</nav>
 	</div>
-	<nav>
-		자전거 종류가 들어갈 자리
-	
+	<nav style="background:white; color:black"class="first">
+		<ul>
+			<li>하이브리드</li>
+			
+			<li>픽시</li>
+			
+			<li>로드바이크</li>
+			
+			<li>산악자전거</li>
+			
+			<li>팻바이크</li>
+			
+			<li>여성용/미니벨로</li>
+			
+			<li>악세사리</li>
+		</ul>
 	</nav>
 	
 	

@@ -1,46 +1,43 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-		<!-- Javascript files -->
-		<!-- jQuery -->
-		<script src="/js/jquery.js"></script>
-		<!-- Bootstrap JS -->
-		<script src="/js/bootstrap.min.js"></script>
-		<!-- jQuery UI -->
-		<script src="/js/jquery-ui.min.js"></script> 
-		<!-- jQuery Flot -->
-		<script src="/js/excanvas.min.js"></script>
-		<script src="/js/jquery.flot.js"></script>
-		<script src="/js/jquery.flot.resize.js"></script>
-		<script src="/js/jquery.flot.pie.js"></script>
-		<script src="/js/jquery.flot.stack.js"></script>
-		<!-- Sparklines -->
-		<script src="/js/sparklines.js"></script> 
-		<!-- jQuery Gritter -->
-		<script src="/js/jquery.gritter.min.js"></script>
-		<!-- Respond JS for IE8 -->
-		<script src="/js/respond.min.js"></script>
-		<!-- HTML5 Support for IE -->
-		<script src="/js/html5shiv.js"></script>
-		<!-- Custom JS -->
-		<script src="/js/custom.js"></script>
-		
-		<!-- Script for this page -->
-		<script src="/js/sparkline-index.js"></script>
-		
-		<!-- Full Google Calendar - Calendar -->
-		<script src="/js/moment.min.js"></script>
-		<script src="/js/fullcalendar.min.js"></script> 
-		
-		<!-- RateIt - Star rating -->
-		<script src="/js/jquery.rateit.min.js"></script>
+	pageEncoding="UTF-8"%>
+	
+<!-- Javascript files -->
+<!-- jQuery -->
+<script src="/myShopping/js/jquery.js"></script>
+<!-- Bootstrap JS -->
+<script src="/myShopping/js/bootstrap.min.js"></script>
+<!-- jQuery UI -->
+<script src="/myShopping/js/jquery-ui.min.js"></script>
+<!-- jQuery Flot -->
+<script src="/myShopping/js/excanvas.min.js"></script>
+<script src="/myShopping/js/jquery.flot.js"></script>
+<script src="/myShopping/js/jquery.flot.resize.js"></script>
+<script src="/myShopping/js/jquery.flot.pie.js"></script>
+<script src="/myShopping/js/jquery.flot.stack.js"></script>
+<!-- Sparklines -->
+<script src="/myShopping/js/sparklines.js"></script>
+<!-- jQuery Gritter -->
+<script src="/myShopping/js/jquery.gritter.min.js"></script>
+<!-- Respond JS for IE8 -->
+<script src="/myShopping/js/respond.min.js"></script>
+<!-- HTML5 Support for IE -->
+<script src="/myShopping/js/html5shiv.js"></script>
+<!-- Custom JS -->
+<script src="/myShopping/js/custom.js"></script>
+<!-- Script for this page -->
+<script src="/myShopping/js/sparkline-index.js"></script>
+<!-- Full Google Calendar - Calendar -->
+<script src="/myShopping/js/moment.min.js"></script>
+<script src="/myShopping/js/fullcalendar.min.js"></script>
+<!-- RateIt - Star rating -->
+<script src="/myShopping/js/jquery.rateit.min.js"></script>
+<!-- Date picker -->
+<script src="/myShopping/js/bootstrap-datetimepicker.min.js"></script>
+<!-- Bootstrap Toggle -->
+<script src="/myShopping/js/bootstrap-switch.min.js"></script>
 
-		<!-- Date picker -->
-		<script src="/js/bootstrap-datetimepicker.min.js"></script> 
-		<!-- Bootstrap Toggle -->
-		<script src="/js/bootstrap-switch.min.js"></script> 
-		
-		
-	<link href="/summernote/summernote.css" rel="stylesheet">
+
+<link href="/summernote/summernote.css" rel="stylesheet">
 	<script src="/summernote/summernote.js"></script>
 	<!-- summer note korean language pack -->
 	<script src="/summernote/lang/summernote-ko-KR.js"></script>
