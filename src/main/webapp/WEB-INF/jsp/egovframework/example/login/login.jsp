@@ -3,17 +3,11 @@
 
 <html lang="en">
 	<head>	
-		<!-- Styles -->
-		<!-- Bootstrap CSS -->
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 		<!-- Custom CSS -->
 		<link href="css/metroKing/css/style.css" rel="stylesheet">
 		<!-- Favicon -->
 		<link rel="shortcut icon" href="#">
-
-		<!-- 
-		<link href="css/metroKing/css/font-awesome.min.css" rel="stylesheet">
-		 -->
 	</head>
 	<!-- jQuery -->
 	<script src="js/jquery.js"></script>
@@ -24,6 +18,7 @@
 	<script src="js/rsa/rng.js"></script>
 	
 	<script type="text/javascript">
+	
 	$(function(){
 		$("#loginResultMessage").text("${sessionScope.error}");
 		

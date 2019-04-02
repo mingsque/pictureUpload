@@ -28,10 +28,10 @@
             <!--  Page Content  -->            
 			<tiles:insertAttribute name="content"/>  
             <!--  END Page Content -->
+            <tiles:insertAttribute name="right"/>
         </div>
         <!--  Main Wrap  -->
         
-
         <!--  Footer  -->
 		<tiles:insertAttribute name="footer"/>            
         <!--  END Footer. Class fixed for fixed footer  -->
@@ -48,6 +48,7 @@
         <script src="js/jquery.scrollTo.min.js"></script>
         <script src="js/smooth.scroll.min.js"></script>
         <script src="js/jquery.appear.js"></script>
+        <script src="js/jquery.cookie.js"></script>
         <script src="js/jquery.countTo.js"></script>
         <script src="js/jquery.scrolly.js"></script>
         <script src="js/plugins-scroll.js"></script>
