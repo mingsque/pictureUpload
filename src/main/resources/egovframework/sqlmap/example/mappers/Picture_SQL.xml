@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.example.picture.service.impl.PictureMapper">
+
+	<insert id="insertPitureBoardInfo" parameterType="egovMap">
+	
+		INSERT INTO PICTURE_BOARD(		
+				TITLE,
+				CONTENT,
+				WRITER,
+				URL
+			) VALUES (
+				#{title},
+				#{content},
+				#{writer},
+				#{url}
+			)
+	</insert>
+	
+	<insert id="insertPictureBoardReply" parameterType="egovMap">
+		
+			INSERT INTO PICTURE_BOARD_REPLY(		
+				BOARD_NO,
+				CONTENT,
+				WRITER
+			) VALUES (
+				#{boardNo},
+				#{content},
+				#{writer}
+			)
+	
+	</insert>
+	
+	
+	
+	<select id="selectPictureDetail" parameterType="String" resultType="egovMap">
+	
+		SELECT 
+			A.SEQ_NO,
+			A.TITLE,
+			A.WRITER,
+			A.CONTENT,
+			DATE_FORMAT(A.MOD_DATE, '%Y-%m-%d %H:%i') AS MOD_DATE,
+			DATE_FORMAT(A.REG_DATE, '%Y-%m-%d %H:%i') AS REG_DATE,
+			A.URL,
+			IFNULL(B.FAVORITE_COUNT, 0) FAVORITE_COUNT
+		FROM  
+			PICTURE_BOARD A
+		LEFT OUTER JOIN 
+					(SELECT *, COUNT(*) AS FAVORITE_COUNT
+					FROM PICTURE_BOARD_FAVORITE
+					WHERE USE_YN = 'Y'
+					GROUP BY BOARD_NO) B
+					ON A.SEQ_NO = B.BOARD_NO
+		WHERE 
+			A.SEQ_NO = #{_parameter};
+		
+	</select>
+	
+		
+	
+	<select id="selectPictureBoardReplyList" parameterType="String" resultType="egovMap">
+		SELECT 
+			SEQ_NO,
+			BOARD_NO,
+			CONTENT,
+			WRITER,
+			DATE_FORMAT(MOD_DATE, '%Y-%m-%d %H:%i') AS MOD_DATE,
+			DATE_FORMAT(REG_DATE, '%Y-%m-%d %H:%i') AS REG_DATE,
+			USE_YN 	
+		FROM  
+			PICTURE_BOARD_REPLY
+		WHERE 
+			BOARD_NO = #{_parameter} AND USE_YN = 'Y';
+	
+	</select>
+	
+	<update id="updateReply" parameterType="map">
+	
+		UPDATE PICTURE_BOARD_REPLY
+		
+		SET		
+			CONTENT = #{content}
+		
+		WHERE SEQ_NO = #{seqNo};
+	</update>
+
+	<update id="deleteReply" parameterType="map">
+		UPDATE PICTURE_BOARD_REPLY
+		
+		SET		
+			USE_YN = 'N'
+		
+		WHERE SEQ_NO = #{seqNo};
+	</update>
+	
+	<insert id="insertFavorite" parameterType="map">
+		INSERT INTO PICTURE_BOARD_FAVORITE (BOARD_NO, MEMBER_ID) VALUES (#{boardNo}, #{id})
+		ON DUPLICATE KEY
+		UPDATE	use_yn		= 'Y'
+	</insert>
+	
+	<update id="deleteFavorite" parameterType="map">
+		UPDATE	PICTURE_BOARD_FAVORITE
+		SET		USE_YN = 'N'
+		WHERE	BOARD_NO = #{boardNo} AND MEMBER_ID = #{id};
+	</update>
+	
+	<select id="myFavorite" parameterType="egovMap" resultType="String">
+		SELECT	USE_YN
+		FROM	PICTURE_BOARD_FAVORITE
+		WHERE 	MEMBER_ID = #{id} AND BOARD_NO = #{seqNo} ;
+	</select>
+	
+</mapper>
