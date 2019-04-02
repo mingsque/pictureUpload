@@ -9,7 +9,7 @@
 		for(i=0; i<5; i++) {
 			console.log(temp[temp.length-1-i]);
 			
-			$("#recentList").append("<li><img src='"+temp[temp.length-1-i]+"' width=70px height=70px/></li>");
+			$("#recentList").append("<li><img src='"+temp[temp.length-1-i]+"' width=80px height=80px/></li>");
 		}
 		
 	})
@@ -17,9 +17,9 @@
 </script>
 
 
-<div style="position:fixed; right:100px; top:300px; z-index:2;">
+<div style="border:solid 1px; position:fixed; right:100px; top:200px; z-index:2;">
 	
-	<div>
+	<div style="text-align:center">
 		<p>최근 본 사진</p>		
 		<ul id="recentList">
 		

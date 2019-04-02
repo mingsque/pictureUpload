@@ -40,7 +40,7 @@ $(document).ready(function(){
 		}
 		
 		popupWindow = window.open("pictureDetail.do?seq_no="+seqNo,"Detail","width="+ popWidth + ", height=800");
-		
+
 	})	
 })
 
@@ -49,12 +49,29 @@ $(document).ready(function(){
 </script>
 
 
-
 <div id="page-content">
 	<div id="home-wrap" class="content-section">
 		<div class="container">
-			<section id="projects" data-isotope="load-simple"
-				class="page padding-bottom-null">
+			<div style="margin-top:40px;" >
+				<table id="noticeBoard" class="table table-border">
+					<tbody>
+						<tr>
+							<td style="width:20%">공지카테고리1</td>							
+							<td>공지사항1</td>
+						</tr>
+						<tr>
+							<td style="width:20%">공지카테고리2</td>
+							<td>공지사항2</td>
+						</tr>
+						<tr>
+							<td style="width:20%">공지카테고리3</td>
+							<td>공지사항3</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		
+			<section id="projects" data-isotope="load-simple" class="page padding-bottom-null">
 				<div class="row no-margin text-left">
 					<div class="col-sm-12 padding-leftright-null">
 						<div class="filter-wrap left">
