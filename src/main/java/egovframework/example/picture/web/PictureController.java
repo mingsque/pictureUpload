@@ -240,6 +240,11 @@ public class PictureController {
 	}
 	
 	
+	@RequestMapping("pictureWrite.do")
+	public String pictureWrite() throws Exception {
+		
+		return "picture/write.tiles";
+	}
 	
 	@RequestMapping("pictureMain.do")
 	public String pictureMain(HttpServletRequest request) throws Exception{

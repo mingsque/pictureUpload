@@ -53,55 +53,33 @@ $(document).ready(function(){
 	<div id="home-wrap" class="content-section">
 		<div class="container">
 			<div style="margin-top:40px;" >
-				<table id="noticeBoard" class="table table-border">
-					<tbody>
-						<tr>
-							<td style="width:20%">공지카테고리1</td>							
-							<td>공지사항1</td>
-						</tr>
-						<tr>
-							<td style="width:20%">공지카테고리2</td>
-							<td>공지사항2</td>
-						</tr>
-						<tr>
-							<td style="width:20%">공지카테고리3</td>
-							<td>공지사항3</td>
-						</tr>
-					</tbody>
-				</table>
+			
+				<div style="padding:25px 25px; margin:20px; border:solid 1px; border-color:#E6E6E6">
+					<h3 style="padding-bottom:10px">공지사항</h3>
+					<table id="noticeBoard" class="table table-border">
+						<tbody>
+							<tr>
+								<td style="width:20%">공지카테고리1</td>							
+								<td>공지사항1</td>
+							</tr>
+							<tr>
+								<td style="width:20%">공지카테고리2</td>
+								<td>공지사항2</td>
+							</tr>
+							<tr>
+								<td style="width:20%">공지카테고리3</td>
+								<td>공지사항3</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		
-			<section id="projects" data-isotope="load-simple" class="page padding-bottom-null">
-				<div class="row no-margin text-left">
-					<div class="col-sm-12 padding-leftright-null">
-						<div class="filter-wrap left">
-							<ul class="col-md-12 filters uppercase padding-leftright-null">
-								<li><a href="">추천순</a></li>
-								<li>최신순</li>
-							</ul>
-							<!-- data-xxx 의미는 없지만 데이터 저장용으로 사용할 수 있는 태그-->
-							<ul class="col-md-12 filters uppercase padding-leftright-null">
-								<li data-filter="*" class="is-checked">All</li>
-								<li data-filter=".design">Design</li>
-								<li data-filter=".branding">Branding</li>
-								<li data-filter=".photography">Photography</li>
-								<li data-filter=".web">Web</li>
-								<li data-filter=".app">Apps</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-					
-				<div style="text-align:center; font-size:20px">
-					<c:if test="${pageGroup > 1 }">
-						<a href="getPage.do?page=${startPage-1 }" > < </a>
-					</c:if>
-					<c:forEach begin="${startPage }" end="${endPage }" varStatus="status">
-						<a href="getPage.do?page=${startPage + status.count - 1}">${startPage + status.count - 1 }</a>
-					</c:forEach>
-					<c:if test="${pageGroup < lastGroup }">
-						<a href="getPage.do?page=${endPage+1 }" > > </a>
-					</c:if>
+			<section style="margin:20px;border:solid 1px;border-color:#E6E6E6" id="projects" data-isotope="load-simple" class="page padding-bottom-null">
+
+				<div style="text-align:left; font-size:20px">
+					<h3>사진게시판</h3>
+					<p style="display:inline-block"><a href="pictureMain.do">더 보기</a></p>
 				</div>
 
 				<div class="projects-items equal three-columns">

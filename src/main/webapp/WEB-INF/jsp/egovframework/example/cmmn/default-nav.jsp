@@ -41,20 +41,18 @@
 								<li><a href="index-agency.html">Home Agency</a></li>
 								<li><a href="index-shop.html">Home Shop</a></li>
 							</ul></li> -->
-						<li class="submenu"><a href="javascript:void(0)">상품</a>
-							<ul class="sub-menu" id="cateList">
-							</ul></li>
 						<li class="submenu"><a href="#">고객센터</a>
 							<ul class="sub-menu">
 								<li><a href="qnaBoard.do">QnA</a></li>
 								<li><a href="faqBoard.do">FAQ</a></li>
 								<li><a href="noticeBoard.do">공지사항</a></li>
 								<li><a href="personalBoard.do">1:1문의</a></li>
-							</ul></li>
+							</ul>
+						</li>
 <!-- 
 						<li><a href="manage/main.do">manage</a></li>
  -->						
- 						<li><a href="pictureMain.do">게시판</a></li>
+ 						<li><a href="pictureMain.do">사진 게시판</a></li>
 						
 						<c:choose>
 							<c:when test="${sessionScope.name eq null}">
@@ -81,6 +79,22 @@
 			</div>
 			<!--  END Button for Responsive Menu  -->
 		</nav>
+		<c:choose>
+			<c:when test="${sessionScope.id eq null}">
+				<p style="text-align:center"><a href="login.do">로그인</a> 을 해주세요</p>
+			</c:when>
+			<c:otherwise>
+				<nav>
+					<div style="text-align:center">
+						<ul>
+							<li style="display:inline-block; margin:10px">${sessionScope.id }</li>
+							<li style="display:inline-block; margin:10px"><a href="followMain.do">팔로우</a></li>
+							<li style="display:inline-block; margin:10px"><a href="#">팔로워</a></li>			
+						</ul>
+					</div>
+				</nav>
+			</c:otherwise>
+		</c:choose>
 	</div>
 </header>
 <!--  END Header & Menu  -->

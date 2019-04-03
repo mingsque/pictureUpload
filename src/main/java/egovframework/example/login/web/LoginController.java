@@ -150,7 +150,7 @@ public class LoginController {
 			
 			session.setAttribute("error", "");
 			
-			result = "main/main.tiles";
+			result = "redirect:/main.do";
 			
 		} else if( idCheck == false ) {
 			session.setAttribute("error", "해당하는 아이디가 없습니다.");
