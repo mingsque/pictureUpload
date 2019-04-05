@@ -183,6 +183,7 @@ public class BoardController {
 	}
 	
 	
+	
 	@RequestMapping(value = "qnaBoardWriteSet.do")
 	public String qnaBoardWriteSet(HttpServletRequest request) throws Exception{
 		
@@ -302,9 +303,50 @@ public class BoardController {
 	@RequestMapping(value = "noticeBoard.do")
 	public String noticeBoard(HttpServletRequest request, ModelMap model) throws Exception{
 
-		List<EgovMap> noticeBoardList = boardService.selectNoticeBoardList();
+List<EgovMap> boardList = null;
 		
-		model.addAttribute("noticeBoardList", noticeBoardList);
+		PagingVO pagingVO = new PagingVO();
+
+		System.out.println(pagingVO.getRows());
+		
+		int pageGroup = (int) Math.ceil((double)pagingVO.getPage()/pagingVO.getPageScale());
+		
+		long startPage = (pageGroup -1) * pagingVO.getPageScale() + 1;
+		pagingVO.setStartPage(startPage);
+		
+		long endPage = startPage + pagingVO.getPageScale() - 1;
+		pagingVO.setEndPage(endPage);
+		
+		long prePage	= (pageGroup-2) * pagingVO.getPageScale() + 1;
+		long nextPage	= pageGroup * pagingVO.getPageScale() + 1;
+		
+		HashMap<String, Object> resMap = new HashMap<String, Object>();
+		
+		EgovMap pagingList = boardService.selectQnaBoardListCnt(pagingVO);
+		
+		resMap.put("pageGroup",	pageGroup);
+		resMap.put("startPage",	startPage);
+		resMap.put("endPage",	endPage);
+		resMap.put("prePage",	prePage);
+		resMap.put("nextPage",	nextPage);
+		resMap.put("page", 		pagingVO.getPage());
+		resMap.put("pageScale", pagingVO.getPageScale());
+		resMap.put("totalPage", pagingList.get("totalPage"));
+		
+		System.out.println(startPage);
+		System.out.println(pageGroup);
+		System.out.println(endPage);
+		
+		try{
+			boardList = boardService.selectQnaBoardList(pagingVO);	
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println(boardList);
+		
+		model.addAttribute("qnaBoardList",	boardList);
+		model.addAttribute("resMap", 		resMap);
 		
 		return "board/noticeBoard.tiles";
 	}
@@ -331,6 +373,12 @@ public class BoardController {
 		return "board/noticeBoardView.tiles";
 	}
 	
+	
+	@RequestMapping(value = "noticeBoardWrite.do")
+	public String noticeBoardWrite() throws Exception{
+		
+		return "board/noticeBoardWrite.tiles";
+	}
 	
 	/*
 	 * personalBoard
