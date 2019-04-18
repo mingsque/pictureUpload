@@ -2,6 +2,50 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="egovframework.example.picture.service.impl.PictureMapper">
 
+	<select id="selectPictureList" parameterType="pagingVO" resultType="egovMap">	
+		SELECT AA.*
+		FROM
+			(SELECT A.* , floor( (RNUM-1) / #{rows} + 1 ) as pageNumber
+			FROM 	
+				(SELECT * , @rnum := @rnum + 1 as RNUM , date_format(MOD_DATE, '%Y-%m-%d %H:%i')
+				FROM PICTURE_BOARD , (SELECT @rnum := 0) R
+				WHERE USE_YN = 'Y'
+				ORDER BY SEQ_NO DESC) A
+			)AA	
+		WHERE AA.pageNumber = #{page};
+	</select>
+	
+	
+	<select id="selectPictureCount" resultType="int">
+		SELECT count(*) AS TOTAL_COUNT
+		FROM PICTURE_BOARD
+		WHERE USE_YN = 'Y'
+	</select>
+	
+	<select id="selectFavoritePictureList" parameterType="pagingVO" resultType="egovMap">	
+		SELECT AA.*
+		FROM
+			(SELECT A.* , floor( (RNUM-1) / #{rows} + 1 ) as pageNumber
+			 FROM 	
+				(SELECT B.* , @rnum := @rnum + 1 as RNUM , date_format(B.MOD_DATE, '%Y-%m-%d %H:%i')
+				 FROM (	SELECT m.*, f.fcnt 
+						FROM picture_board m
+						LEFT OUTER JOIN 
+							(SELECT *, count(board_no) as fcnt
+							 FROM picture_board_favorite 
+							 WHERE use_yn = 'Y' 
+							 GROUP BY board_no ) f
+						ON m.SEQ_NO = f.BOARD_NO	
+						WHERE m.USE_YN = 'Y'
+						GROUP BY m.seq_no
+						ORDER BY fcnt DESC ) B  , (SELECT @rnum := 0) R
+				)A
+			)AA	
+		WHERE AA.pageNumber = #{page};
+	</select>
+	
+
+
 	<insert id="insertPitureBoardInfo" parameterType="egovMap">
 	
 		INSERT INTO PICTURE_BOARD(		

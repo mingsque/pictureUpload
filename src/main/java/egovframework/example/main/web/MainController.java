@@ -28,6 +28,9 @@ public class MainController {
 		
 		List<EgovMap> pictureList = mainService.selectPictureList(pageParam);
 		
+		//최신 공지 3개 가져오기
+		List<EgovMap> noticeList = mainService.selectNoticeList();
+		
 		int pictureListCount = mainService.selectPictureCount();
 
 		int page		= (int) pageParam.getPage();
@@ -43,6 +46,7 @@ public class MainController {
 			endPage = lastPage;
 		}
 		
+		model.addAttribute("noticeList", noticeList);
 		model.addAttribute("pictureListCount", pictureListCount);
 		model.addAttribute("pictureList", pictureList);
 		model.addAttribute("page", page);

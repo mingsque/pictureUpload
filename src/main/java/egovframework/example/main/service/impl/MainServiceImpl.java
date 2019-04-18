@@ -27,4 +27,10 @@ public class MainServiceImpl implements MainService {
 		// TODO Auto-generated method stub
 		return mainMapper.selectPictureCount();
 	}
+
+	@Override
+	public List<EgovMap> selectNoticeList() throws Exception {
+		// TODO Auto-generated method stub
+		return mainMapper.selectNoticeList();
+	}
 }

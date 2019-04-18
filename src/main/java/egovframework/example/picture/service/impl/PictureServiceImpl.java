@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import egovframework.example.picture.service.PagingVO;
 import egovframework.example.picture.service.PictureService;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 
@@ -68,6 +69,25 @@ public class PictureServiceImpl implements PictureService {
 	public String myFavorite(EgovMap parameter) throws Exception {
 		// TODO Auto-generated method stub
 		return pictureMapper.myFavorite(parameter);
+	}
+
+	@Override
+	public List<EgovMap> selectPictureList(PagingVO pageParam) throws Exception {
+		// TODO Auto-generated method stub
+		return pictureMapper.selectPictureList(pageParam);
+	}
+
+
+	@Override
+	public int selectPictureCount() throws Exception {
+		// TODO Auto-generated method stub
+		return pictureMapper.selectPictureCount();
+	}
+
+	@Override
+	public List<EgovMap> selectFavoritePictureList(PagingVO pageParam) throws Exception {
+		// TODO Auto-generated method stub
+		return pictureMapper.selectFavoritePictureList(pageParam);
 	}
 
 }

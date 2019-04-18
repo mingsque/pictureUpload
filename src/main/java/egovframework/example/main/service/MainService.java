@@ -11,4 +11,6 @@ public interface MainService {
 
 	int selectPictureCount() throws Exception;
 
+	List<EgovMap> selectNoticeList() throws Exception;
+
 }

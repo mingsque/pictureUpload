@@ -190,12 +190,11 @@ public class BoardController {
 		//String no = request.getParameter("no");
 		EgovMap map = new EgovMap();
 		
-		System.out.println(request.getParameter("writer") + "=========");
-		
 		map.put("writer", 	request.getParameter("writer"));
 		//map.put("no", 		request.getParameter("no"));
 		map.put("title", 	request.getParameter("title"));
 		map.put("content",	request.getParameter("content"));
+		map.put("category", request.getParameter("category"));
 		
 		try{
 			boardService.insertQnaBoard(map);	
@@ -303,11 +302,9 @@ public class BoardController {
 	@RequestMapping(value = "noticeBoard.do")
 	public String noticeBoard(HttpServletRequest request, ModelMap model) throws Exception{
 
-List<EgovMap> boardList = null;
+		List<EgovMap> boardList = null;
 		
 		PagingVO pagingVO = new PagingVO();
-
-		System.out.println(pagingVO.getRows());
 		
 		int pageGroup = (int) Math.ceil((double)pagingVO.getPage()/pagingVO.getPageScale());
 		
@@ -322,7 +319,7 @@ List<EgovMap> boardList = null;
 		
 		HashMap<String, Object> resMap = new HashMap<String, Object>();
 		
-		EgovMap pagingList = boardService.selectQnaBoardListCnt(pagingVO);
+		EgovMap pagingList = boardService.selectNoticeBoardListCnt(pagingVO);
 		
 		resMap.put("pageGroup",	pageGroup);
 		resMap.put("startPage",	startPage);
@@ -333,19 +330,14 @@ List<EgovMap> boardList = null;
 		resMap.put("pageScale", pagingVO.getPageScale());
 		resMap.put("totalPage", pagingList.get("totalPage"));
 		
-		System.out.println(startPage);
-		System.out.println(pageGroup);
-		System.out.println(endPage);
-		
 		try{
-			boardList = boardService.selectQnaBoardList(pagingVO);	
+			boardList = boardService.selectNoticeBoardList(pagingVO);	
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 		
 		System.out.println(boardList);
-		
-		model.addAttribute("qnaBoardList",	boardList);
+		model.addAttribute("noticeBoardList",	boardList);
 		model.addAttribute("resMap", 		resMap);
 		
 		return "board/noticeBoard.tiles";
@@ -354,23 +346,23 @@ List<EgovMap> boardList = null;
 	/* noticeBoardView
 	 * 게시판 공지사항 상세보기 
 	 *  */
-	@RequestMapping(value = "noticeBoardView.do")
-	public String noticeBoardView(
-			@RequestParam String seqNo,
-			HttpServletRequest request, 
-			ModelMap model) throws Exception{
+	@RequestMapping(value = "noticeBoardDetail.do")
+	public String noticeBoardDetail (HttpServletRequest request, ModelMap model) throws Exception{
 
-		System.out.println("########## LOG ########## - noticeBoardView.do 111111111");
+		EgovMap noticeBoardDetail = null;
+		String seq_no = request.getParameter("seq_no");
 		
-		List<EgovMap> noticeBoardView = boardService.selectNoticeBoardView(seqNo);
+		try{
+			noticeBoardDetail = boardService.selectNoticeBoardDetail(seq_no);	
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 
-		System.out.println("########## LOG ########## - noticeBoardView.do 222222222");
+		model.addAttribute("noticeBoardDetail", noticeBoardDetail);
+		model.addAttribute("enter", "\r\n");
+		System.out.println(noticeBoardDetail);
 		
-		model.addAttribute("noticeBoardView", noticeBoardView);
-		
-		System.out.println("########## LOG ########## - noticeBoardView.do 333333333");
-		
-		return "board/noticeBoardView.tiles";
+		return "board/noticeBoardDetail.tiles";
 	}
 	
 	
@@ -380,6 +372,65 @@ List<EgovMap> boardList = null;
 		return "board/noticeBoardWrite.tiles";
 	}
 	
+	
+	@RequestMapping(value = "noticeBoardWriteAction.do")
+	public String noticeBoardWriteAction (HttpServletRequest request) throws Exception{
+		
+		System.out.println("notice board write");
+		System.out.println(request.getParameter("category"));
+		EgovMap map = new EgovMap();
+		
+		map.put("writer", 	request.getParameter("writer"));
+		map.put("title", 	request.getParameter("title"));
+		map.put("content",	request.getParameter("content"));
+		map.put("category", request.getParameter("category"));
+		
+		try{
+			boardService.insertNoticeBoard(map);	
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/noticeBoard.do";
+	}	
+	
+	
+	@RequestMapping(value = "noticeBoardModify.do")
+	public String noticeBoardModify(HttpServletRequest request, ModelMap model) throws Exception{
+		EgovMap noticeBoardDetail = null;	
+		String seqNo = request.getParameter("seq_no");
+		
+		try{
+			noticeBoardDetail = boardService.selectNoticeBoardDetail(seqNo);	
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		model.addAttribute("noticeBoardDetail", noticeBoardDetail);
+		model.addAttribute("enter", "\r\n");
+		
+		return "board/noticeBoardModify.tiles";
+	}
+	
+	@RequestMapping(value = "noticeBoardModifyAction.do")
+	public String noticeBoardModifyAction(HttpServletRequest request, ModelMap model) throws Exception{
+		
+		System.out.println();
+		
+		EgovMap param = new EgovMap();
+		param.put("seqNo", request.getParameter("seq_no"));
+		param.put("title", request.getParameter("title"));
+		param.put("content", request.getParameter("content"));
+		try{
+			boardService.updateNoticeBoard(param);	
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		return "redirect:/noticeBoardDetail.do?seq_no="+request.getParameter("seq_no");
+	}
+
+		
 	/*
 	 * personalBoard
 	 * 1:1 문의   

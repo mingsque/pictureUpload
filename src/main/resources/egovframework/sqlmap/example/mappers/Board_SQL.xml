@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="egovframework.example.board.service.impl.BoardMapper">
 
+	<!-- QNA BOARD START -->
 	<select id="selectQnaBoardList" parameterType="pagingVO" resultType="egovMap">
 		SELECT AA.*
 		FROM (
@@ -34,7 +35,6 @@
 		WHERE	NO = #{_parameter};	
 	</select>
 
-	
 	<update id="updateQnaBoard" parameterType="egovMap">
 		UPDATE	QNABOARD_TB
 		SET	  	TITLE	= #{title},
@@ -62,8 +62,9 @@
 		WHERE	NO		= #{no};
 			
 	</update>
+	<!-- QNA BOARD END -->
 
-
+	<!-- QNA BOARD REPLY START -->	
 	<insert id="insertQnaboardReply" parameterType="egovMap">
 		INSERT INTO QNABOARD_REPLY_TB (
 			BOARD_NO,
@@ -75,7 +76,6 @@
 			#{content}
 		)
 	</insert>
-
 	<select id="selectQnaBoardReplyList" parameterType="String" resultType="egovMap">
 		SELECT 
 			WRITER,
@@ -95,7 +95,71 @@
 		WHERE	SEQ_NO	= #{seqNo};
 			
 	</update>
+	<!-- QNA BOARD REPLY END -->
+
+	<!-- NOTICE BOARD START -->
 	
+	<select id="selectNoticeBoardList" parameterType="pagingVO" resultType="egovMap">
+		SELECT AA.*
+		FROM (
+			SELECT A.*, floor( (A.RNUM-1) /#{rows} + 1 ) as pageNumber
+			FROM
+				(SELECT * , @rnum := @rnum + 1 as RNUM , date_format(MOD_DATE, '%Y.%m.%d %H:%i') as remoddate
+				FROM NOTICE_BOARD, (SELECT @rnum := 0) R
+				WHERE USE_YN = 'Y'
+				ORDER BY SEQ_NO desc) A
+		) AA
+		WHERE AA.pageNumber = #{page}
+	</select>
+
+
+	<select id="selectNoticeBoardListCnt" parameterType="pagingVO" resultType="egovMap">
+		SELECT	count(*) as TOTAL_CNT , CEIL(COUNT(*)/#{rows}) AS TOTAL_PAGE
+		FROM	NOTICE_BOARD
+		WHERE	USE_YN = 'y'
+	</select>
+
+	<select id="selectNoticeBoardDetail" parameterType="String"  resultType="egovMap">
+		SELECT	SEQ_NO,
+				CATEGORY,
+			  	TITLE,
+			  	CONTENT,
+			  	WRITER,
+			  	USE_YN,
+			  	REG_DATE,
+			  	MOD_DATE,
+			  	date_format(MOD_DATE, '%Y.%m.%d %H:%i') as remoddate
+		FROM	NOTICE_BOARD
+		WHERE	SEQ_NO = #{_parameter};	
+	</select>
+
+	<update id="updateNoticeBoard" parameterType="egovMap">
+		UPDATE	NOTICE_BOARD
+		SET	  	TITLE	= #{title},
+			  	CONTENT = #{content}
+		WHERE	SEQ_NO	= #{seq_no};
+	</update>
+ 
+ 	<insert id="insertNoticeBoard" parameterType="egovMap">
+		INSERT INTO NOTICE_BOARD (
+			TITLE,
+			CONTENT,
+			WRITER,
+			CATEGORY
+		) VALUES (
+			#{title},
+			#{content},
+			#{writer},
+			#{category}
+		)
+	</insert>
+	<!-- 
+	<update id="deleteNoticeBoard" parameterType="egovMap">
+		UPDATE	NOTICE_BOARD
+		SET	  	USEYN	= 'N'
+		WHERE	NO		= #{no};
+	</update>
+	NOTICE BOARD END -->
 	<select id="selectAllFaqList" resultType="egovMap">
 		SELECT SEQ_NO,
 			   TITLE,

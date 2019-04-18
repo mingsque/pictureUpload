@@ -13,4 +13,6 @@ public interface MainMapper {
 
 	int selectPictureCount() throws Exception;
 
+	List<EgovMap> selectNoticeList() throws Exception;
+
 }

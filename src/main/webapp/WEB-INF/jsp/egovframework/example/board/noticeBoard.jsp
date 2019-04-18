@@ -7,7 +7,9 @@
 	
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
 <style>
 .container {
 	margin: 2% 20%;
@@ -27,9 +29,35 @@
 	border: 1px solid #ddd;
 	margin-bottom: 12px;
 }
-
 </style>
-</head>
+
+<script>
+		function goPreGroup() {
+			var endPage = ${resMap.startPage};
+			endPage = endPage -1;
+			location.href = "goPage.do?page="+endPage;
+		}
+	
+		function goNextGroup() {
+			var endPage = ${resMap.endPage};
+			endPage = endPage + 1;
+			location.href = "goPage.do?page="+endPage;
+		}
+	
+		$().ready(function(){
+			$(".boardRow").click(function(){
+				var seq_no = $(this).children().eq(0).text();
+				
+				location.href = "noticeBoardDetail.do?seq_no=" + seq_no;
+			});
+			
+			$("#writeBtn").click(function(){
+				location.href =	"noticeBoardWrite.do";
+			});
+		});
+</script>
+
+
 <body>
 	<div class="container">
 		<h2 class="top">공지사항</h2>
@@ -39,6 +67,7 @@
 			<thead>
 				<tr>
 					<th scope="col">번호</th>
+					<th scope="col">종류</th>
 					<th scope="col">글 제목</th>
 					<th scope="col">글쓴이</th>
 					<th scope="col">작성일</th>
@@ -46,13 +75,13 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${qnaBoardList}" var="qnaBoardList">
+				<c:forEach items="${noticeBoardList}" var="noticeBoardList">
 					<tr class="boardRow">
-
-						<td>${qnaBoardList.no}</td>
-						<td>${qnaBoardList.title}</td>		
-						<td>${qnaBoardList.writer}</td>
-						<td>${qnaBoardList.remoddate}</td>
+						<td>${noticeBoardList.seqNo}</td>
+						<td>${noticeBoardList.category}</td>
+						<td>${noticeBoardList.title}</td>		
+						<td>${noticeBoardList.writer}</td>
+						<td>${noticeBoardList.remoddate}</td>
 					</tr>
 				</c:forEach>
 			</tbody>	
@@ -60,7 +89,6 @@
 		
 		<div class ="text-center">
 			<ul class="list-inline">
-				
 				<c:if test="${resMap.startPage ne '1'}">
 					<a href="#" onclick=goPreGroup()> << </a>
 				</c:if>
@@ -79,76 +107,15 @@
 		
 		<c:choose>
         	<c:when test="${sessionScope.name eq null}">
-	          	글을 쓰려면 <a href="login.do">로그인</a>을 하셔야합니다.                   	
+	        	<p>글을 쓰려면 <a href="login.do">로그인</a>을 하셔야합니다.</p>                   	
 			</c:when>
 			<c:otherwise>
-               <button type="button" class="btn btn-outline-dark pull-right" id="writeBtn">글쓰기</button>
+				<div align="right">
+            		<button type="button" class="btn btn-outline-dark" id="writeBtn">글쓰기</button>
+				</div>
 			</c:otherwise>
 		</c:choose>
 	</div>
-
-	<form id="frm" method="post" action="noticeBoardWrite.do">
-	</form>
-
-	<script>
-		function goPreGroup() {
-			var endPage = ${resMap.startPage};
-			endPage = endPage -1;
-			location.href = "goPage.do?page="+endPage;
-		}
-		
-	
-		function goNextGroup() {
-			var endPage = ${resMap.endPage};
-			endPage = endPage + 1;
-			location.href = "goPage.do?page="+endPage;
-		}
-	
-	
-		$(".boardRow").click(function(){
-			var no = $(this).children().eq(0).text();
-			
-			location.href = "boardDetail.do?no=" + no;
-		});
-	
-		$("#writeBtn").click(function(){
-			$("#frm").submit();
-		});
-	
-		var acc = document.getElementsByClassName("accordion");
-		var i;
-
-		for (i = 0; i < acc.length; i++) {
-			acc[i].addEventListener("click", function() {
-				this.classList.toggle("active");
-				var panel = this.nextElementSibling;
-				if (panel.style.display === "block") {
-					panel.style.display = "none";
-				} else {
-					panel.style.display = "block";
-				}
-			});
-		}
-
-		function myFunction() {
-			var input, filter, table, tr, td, i;
-			input = document.getElementById("myInput");
-			filter = input.value.toUpperCase();
-			table = document.getElementById("myTable");
-			tr = table.getElementsByTagName("tr");
-			for (i = 0; i < tr.length; i++) {
-				td = tr[i].getElementsByTagName("td")[0];
-				if (td) {
-					if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-						tr[i].style.display = "";
-					} else {
-						tr[i].style.display = "none";
-					}
-				}
-			}
-		}
-		
-	</script>
 
 </body>
 </html>

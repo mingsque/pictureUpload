@@ -2,7 +2,6 @@ package egovframework.example.picture.web;
 
 import java.io.File;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,9 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,13 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.WebRequest;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-
 import egovframework.example.cmmn.JsonUtil;
+import egovframework.example.picture.service.PagingVO;
 import egovframework.example.picture.service.PictureService;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 
@@ -44,8 +35,6 @@ public class PictureController {
 	public String pictureUpload(MultipartHttpServletRequest request) throws Exception{
 		//MultipartResolver에 의해 Multipart요청을 분기해 받음 
 		//MultipartHttpServletRequest는 MultipartRequest과 HttpServletRequest를 상속 받고있다.
-
-		System.out.println(";;");
 		HttpSession session = request.getSession(false);
 		//톰캣의 경로에 대한것
 		//실 서버가 아닌 이클립스에서 톰캣을 돌리면 톰켓에서 웹어플을 돌리기위해 deploy 하게 되면서 
@@ -97,7 +86,7 @@ public class PictureController {
 		
 		pictureService.insertPitureBoardInfo(insertInfo);
 	
-		return "picture/main.tiles";
+		return "redirect:/pictureMain.do";
 	}
 	
 	@RequestMapping("setReply.do")
@@ -142,48 +131,6 @@ public class PictureController {
 		PrintWriter out = response.getWriter();
 		out.write(JsonUtil.HashMapToJson(resultMap));
 	}
-	
-	
-	@RequestMapping("pictureParsingForm.do")
-	public String pictureParsingForm() throws Exception {
-		
-		return "picture/parsingForm.tiles";
-	}
-	
-	@RequestMapping("pictureParsing.do")
-	public void pictureParsing(@RequestBody String reqParam, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		Map<String, Object> resMap = JsonUtil.JsonToMap(reqParam);;
-		String targetUrl = resMap.get("url").toString();
-
-		System.out.println(targetUrl);
-		System.out.println("사진 파싱 시작");
-	
-		//인스타그램은 페이지를 자바스크립트로 동적으로 로드해옴 , jsoup은 첫 소스만을 파싱할 수 있음.
-		//완전히 로드된 html파일이 필요하다.
-	 
-		WebClient webClient = new WebClient();
-		HtmlPage parsingPage = webClient.getPage(targetUrl);
-		
-		System.out.println(parsingPage.asXml());
-		
-		//Document doc = Jsoup.connect(targetUrl).get();
-		//System.out.println(doc.body());
-		
-		//Document doc = Jsoup.parse(parsingPage.asText());
-		//System.out.println(doc);
-		
-		//Elements content = doc.getElementsByTag("a");
-		//System.out.println(content);	
-		
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("result", "success");
-		
-		response.setCharacterEncoding("utf-8");
-		PrintWriter out = response.getWriter();
-		out.write(JsonUtil.HashMapToJson(resultMap));
-	}
-	
 	
 	@RequestMapping("deleteReply.do")
 	public void deleteReply(@RequestBody String reqParam, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -247,11 +194,185 @@ public class PictureController {
 	}
 	
 	@RequestMapping("pictureMain.do")
-	public String pictureMain(HttpServletRequest request) throws Exception{
+	public String pictureMain(HttpServletRequest request, ModelMap model) throws Exception{
+		
+		System.out.println("main controller");
+		
+		PagingVO pageParam = new PagingVO();
+		
+		List<EgovMap> pictureList = pictureService.selectPictureList(pageParam);
+		
+		System.out.println(pictureList.size());
+		
+		int pictureListCount = pictureService.selectPictureCount();
+
+		int page		= (int) pageParam.getPage();
+		int pageScale	= (int) pageParam.getPageScale();
+		int pageGroup	= (page-1) / pageScale + 1;
+		int startPage	= (pageGroup-1)*(pageScale) + 1;
+		int endPage		= pageGroup*pageScale; 
+		int lastPage	= pictureListCount/(int)pageParam.getRows() + 1;
+		int lastGroup	= (lastPage-1) / pageScale + 1;
+		
+		if (endPage > lastPage) {
+			
+			endPage = lastPage;
+		}
+		
+		model.addAttribute("pictureListCount", pictureListCount);
+		model.addAttribute("pictureList", pictureList);
+		model.addAttribute("page", page);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("pageGroup", pageGroup);
+		model.addAttribute("pageScale", pageParam.getPageScale());
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("lastGroup", lastGroup);
+		model.addAttribute("viewMode", "lastView");
 		
 		return "picture/main.tiles";
 	}
 	
+	@RequestMapping("getPicturePage.do")
+	public String getPage(HttpServletRequest request, ModelMap model) throws Exception {
+		
+		PagingVO pageParam = new PagingVO();
+		pageParam.setPage(Long.parseLong(request.getParameter("page")));
+		String viewMode = request.getParameter("viewMode");
+		
+		List<EgovMap> pictureList = null;
+		switch(viewMode){
+			
+		case "lastView":
+			pictureList = pictureService.selectPictureList(pageParam);
+			break;
+		case "favoriteView":
+			pictureList = pictureService.selectFavoritePictureList(pageParam);
+			break;
+		default:
+		
+		}
+		
+		int pictureListCount = pictureService.selectPictureCount();
+
+		int page		= (int) pageParam.getPage();
+		int pageScale	= (int) pageParam.getPageScale();
+		int pageGroup	= (page - 1) / pageScale + 1;
+		int startPage	= (pageGroup-1)*(pageScale) + 1;
+		int endPage		= pageGroup*pageScale; 
+		int lastPage	= pictureListCount/(int)pageParam.getRows() + 1;
+		int lastGroup	= lastPage / pageScale + 1;
+		
+		if (endPage > lastPage) {
+			
+			endPage = lastPage;
+		}
+		
+		System.out.println(pictureListCount);
+		System.out.println(startPage);
+		System.out.println(endPage);
+		System.out.println(lastGroup);
+		
+		model.addAttribute("pictureListCount", pictureListCount);
+		model.addAttribute("pictureList", pictureList);
+		model.addAttribute("page", page);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("pageGroup", pageGroup);
+		model.addAttribute("pageScale", pageParam.getPageScale());
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("lastGroup", lastGroup);
+		model.addAttribute("viewMode", viewMode);
+		
+		return "picture/main.tiles";
+	}
+	
+	@RequestMapping("favoritePictureList.do")
+	public String sortByFavoritePictureList(HttpServletRequest request, ModelMap model) throws Exception {
+		
+		PagingVO pageParam = new PagingVO();
+		
+		List<EgovMap> pictureList = pictureService.selectFavoritePictureList(pageParam);
+		
+		int pictureListCount = pictureService.selectPictureCount();
+
+		int page		= (int) pageParam.getPage();
+		int pageScale	= (int) pageParam.getPageScale();
+		int pageGroup	= (page - 1) / pageScale + 1;
+		int startPage	= (pageGroup-1)*(pageScale) + 1;
+		int endPage		= pageGroup*pageScale; 
+		int lastPage	= pictureListCount/(int)pageParam.getRows() + 1;
+		int lastGroup	= lastPage / pageScale + 1;
+		
+		if (endPage > lastPage) {
+			
+			endPage = lastPage;
+		}
+		
+		System.out.println(pictureListCount);
+		System.out.println(startPage);
+		System.out.println(endPage);
+		System.out.println(lastGroup);
+		
+		model.addAttribute("pictureListCount", pictureListCount);
+		model.addAttribute("pictureList", pictureList);
+		model.addAttribute("page", page);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("pageGroup", pageGroup);
+		model.addAttribute("pageScale", pageParam.getPageScale());
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("lastGroup", lastGroup);
+		model.addAttribute("viewMode", "favoriteView");
+		
+		return "picture/main.tiles";
+	}
+
+	@RequestMapping("pictureBoardSearch.do")
+	public String pictureBoardSearch(HttpServletRequest request, ModelMap model) throws Exception {
+		
+		String keyword = request.getParameter("keyword");
+		PagingVO pageParam = new PagingVO();
+
+	
+		
+		List<EgovMap> pictureList = pictureService.selectFavoritePictureList(pageParam);
+		
+		int pictureListCount = pictureService.selectPictureCount();
+
+		int page		= (int) pageParam.getPage();
+		int pageScale	= (int) pageParam.getPageScale();
+		int pageGroup	= (page - 1) / pageScale + 1;
+		int startPage	= (pageGroup-1)*(pageScale) + 1;
+		int endPage		= pageGroup*pageScale; 
+		int lastPage	= pictureListCount/(int)pageParam.getRows() + 1;
+		int lastGroup	= lastPage / pageScale + 1;
+		
+		if (endPage > lastPage) {
+			
+			endPage = lastPage;
+		}
+		
+		System.out.println(pictureListCount);
+		System.out.println(startPage);
+		System.out.println(endPage);
+		System.out.println(lastGroup);
+		
+		model.addAttribute("pictureListCount", pictureListCount);
+		model.addAttribute("pictureList", pictureList);
+		model.addAttribute("page", page);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("pageGroup", pageGroup);
+		model.addAttribute("pageScale", pageParam.getPageScale());
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("lastGroup", lastGroup);
+		model.addAttribute("viewMode", "favoriteView");
+		
+
+		
+		return "picture.main.tiles";
+	}
 	
 	@RequestMapping("favorite.do")
 	public void favorite (@RequestBody String reqParam, HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -280,7 +401,6 @@ public class PictureController {
 		response.setCharacterEncoding("utf-8");
 		PrintWriter out = response.getWriter();
 		out.write(JsonUtil.HashMapToJson(resultMap));
-		
 	}
 	
 	/* right/left outer join의 차이점은 기준이 되는 테이블이다

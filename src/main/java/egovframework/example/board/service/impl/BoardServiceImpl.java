@@ -11,7 +11,7 @@ import egovframework.example.board.service.PagingVO;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 
 @Service("boardService")
-public class BoardServiceImple implements BoardService {
+public class BoardServiceImpl implements BoardService {
 
 	@Resource(name = "boardMapper")
 	private BoardMapper boardMapper;
@@ -139,5 +139,34 @@ public class BoardServiceImple implements BoardService {
 		return boardMapper.selectQnaBoardListCnt(pagingVO);
 	}
 
+	@Override
+	public void insertNoticeBoard(EgovMap map) throws Exception {
+		// TODO Auto-generated method stub
+		boardMapper.insertNoticeBoard(map);
+	}
+
+	@Override
+	public EgovMap selectNoticeBoardListCnt(PagingVO pagingVO) throws Exception{
+		// TODO Auto-generated method stub
+		return boardMapper.selectNoticeBoardListCnt(pagingVO);
+	}
+
+	@Override
+	public List<EgovMap> selectNoticeBoardList(PagingVO pagingVO) throws Exception{
+		// TODO Auto-generated method stub
+		return boardMapper.selectNoticeBoardList(pagingVO);
+	}
+
+	@Override
+	public EgovMap selectNoticeBoardDetail(String seq_no) throws Exception {
+		// TODO Auto-generated method stub
+		return boardMapper.selectNoticeBoardDetail(seq_no);
+	}
+
+	@Override
+	public void updateNoticeBoard (EgovMap param) throws Exception {
+		// TODO Auto-generated method stub
+		boardMapper.updateNoticeBoard(param);
+	}
 
 }

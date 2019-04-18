@@ -3,6 +3,7 @@ package egovframework.example.picture.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import egovframework.example.picture.service.PagingVO;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 
@@ -26,5 +27,13 @@ public interface PictureMapper {
 	void insertFavorite(Map<String, Object> resMap) throws Exception;
 
 	String myFavorite(EgovMap parameter) throws Exception;
+
+	List<EgovMap> selectPictureList(PagingVO pageParam)throws Exception;
+
+	List<EgovMap> selectNoticeList()throws Exception;
+
+	int selectPictureCount()throws Exception;
+
+	List<EgovMap> selectFavoritePictureList(PagingVO pageParam) throws Exception;
 
 }

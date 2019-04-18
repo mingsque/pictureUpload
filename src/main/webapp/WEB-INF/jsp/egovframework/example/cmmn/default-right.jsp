@@ -1,17 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 
 <script>
+
+	var popupWindow;
 	
-	$().ready(function(){
-		var lastViewList = $.cookie("lastViewCookie");	
-		var temp = lastViewList.split(',');	
+	$(document).ready(function(){
 		
-		for(i=0; i<5; i++) {
+		$("#recentList").on("click","li", function(){
+			var seqNo = $(this).attr("data-filter");
+					
+			popupWindow = window.open("pictureDetail.do?seq_no="+seqNo,"Detail","width=800, height=800");
+		});
+		
+		var lastViewList = $.cookie("lastViewCookie");	
+		var lastViewListSeqNo = $.cookie("lastViewSeqNoCookie");
+		var temp = lastViewList.split(',');	
+		var seqTemp = lastViewListSeqNo.split(',');
+		
+		$("#recentList").children().remove();
+		
+		for(i=temp.length-1; i>temp.length-6; i--) {
 			console.log(temp[temp.length-1-i]);
 			
-			$("#recentList").append("<li><img src='"+temp[temp.length-1-i]+"' width=80px height=80px/></li>");
+			$("#recentList").append("<li data-filter='"+seqTemp[i]+"'><img src='"+temp[i]+"'width=80px height=80px/></li>");
 		}
-		
 	})
 
 </script>

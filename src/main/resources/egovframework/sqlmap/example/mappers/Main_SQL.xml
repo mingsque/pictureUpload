@@ -22,4 +22,12 @@
 		WHERE USE_YN = 'Y'
 	</select>
 
+	<select id="selectNoticeList" resultType="egovMap">
+		SELECT *
+		FROM NOTICE_BOARD
+		WHERE USE_YN = 'Y'
+		ORDER BY SEQ_NO DESC
+		LIMIT 3;
+	</select> 
+
 </mapper>

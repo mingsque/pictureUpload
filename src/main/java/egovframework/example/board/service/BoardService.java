@@ -44,4 +44,14 @@ public interface BoardService {
 
 	EgovMap selectQnaBoardListCnt(PagingVO pagingVO) throws Exception;
 
+	void insertNoticeBoard(EgovMap map) throws Exception;
+
+	EgovMap selectNoticeBoardListCnt(PagingVO pagingVO) throws Exception;
+
+	List<EgovMap> selectNoticeBoardList(PagingVO pagingVO) throws Exception;
+
+	EgovMap selectNoticeBoardDetail(String seq_no) throws Exception;
+
+	void updateNoticeBoard(EgovMap param) throws Exception;
+
 }

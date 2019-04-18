@@ -20,13 +20,14 @@
 			<label for="title">Title</label>
 			<div class="form-inline">
 				<div style="width:100%" class="form-group">
-					<select class="form-control col-lg-2">
-						<option>공지사항</option>
-						<option>이벤트</option>					
+					<select name="category" class="form-control col-lg-2">
+						<option value="공지사항">공지사항</option>
+						<option value="이벤트">이벤트</option>					
 					</select>
 					<input class="form-control off-set col-lg-10" type="text" id="title" name="title">
 				</div>
 			</div>
+				
 				
 			<div style="padding-top:10px" class="form-group">
 				<label for="content">Content</label> 
@@ -43,7 +44,7 @@
 
 	<script>
 		$("#confirmBtn").click(function(){
-			$("#frm").attr("action","qnaBoardWriteSet.do");
+			$("#frm").attr("action","noticeBoardWriteAction.do");
 			
 			$("#frm").submit();
 		})
