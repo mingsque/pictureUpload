@@ -90,4 +90,16 @@ public class PictureServiceImpl implements PictureService {
 		return pictureMapper.selectFavoritePictureList(pageParam);
 	}
 
+	@Override
+	public List<EgovMap> selectSearchPictureList(Map pageParam) throws Exception {
+		// TODO Auto-generated method stub
+		return pictureMapper.selectSearchPictureList(pageParam);
+	}
+
+	@Override
+	public int selectSearchPictureListCount(String keyword) throws Exception {
+		// TODO Auto-generated method stub
+		return pictureMapper.selectSearchPictureListCount(keyword);
+	}
+
 }

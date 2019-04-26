@@ -36,4 +36,8 @@ public interface PictureMapper {
 
 	List<EgovMap> selectFavoritePictureList(PagingVO pageParam) throws Exception;
 
+	List<EgovMap> selectSearchPictureList(Map pageParam) throws Exception;
+
+	int selectSearchPictureListCount(String keyword) throws Exception;
+
 }

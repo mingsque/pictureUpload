@@ -44,7 +44,27 @@
 		WHERE AA.pageNumber = #{page};
 	</select>
 	
-
+	<select id="selectSearchPictureList" parameterType="Map" resultType="egovMap">	
+		SELECT AA.*
+		FROM
+			(SELECT A.* , floor( (RNUM-1) / #{rows} + 1 ) as pageNumber
+			 FROM 	
+				(SELECT B.* , @rnum := @rnum + 1 as RNUM , date_format(B.MOD_DATE, '%Y-%m-%d %H:%i')
+				 FROM (	
+				 		SELECT *
+						FROM PICTURE_BOARD
+						WHERE title LIKE '%${keyword}%' AND USE_YN = 'Y')B , (SELECT @rnum := 0) R
+						ORDER BY SEC_NO DESC
+				)A
+			)AA	
+		WHERE AA.pageNumber = #{page};
+	</select>
+	
+	<select id="selectSearchPictureListCount" parameterType="String" resultType="int">	
+		SELECT	COUNT(*) AS CNT
+		FROM	PICTURE_BOARD
+		WHERE	TITLE LIKE '%${_parameter}%' AND USE_YN = 'Y'
+	</select>
 
 	<insert id="insertPitureBoardInfo" parameterType="egovMap">
 	

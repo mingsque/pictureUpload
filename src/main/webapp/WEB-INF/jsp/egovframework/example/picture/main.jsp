@@ -73,20 +73,24 @@ $(document).ready(function(){
 				<div class="row no-margin text-left">
 					<div class="col-sm-12 padding-leftright-null">
 						<div class="filter-wrap left">
-							<ul class="col-md-12 filters uppercase padding-leftright-null">
-								<li><a href="favoritePictureList.do">추천순</a></li>
-								<li><a href="pictureMain.do">최신순</a></li>
-							</ul>
 
+
+							<h3>사진 게시판</h3>
 							<form action="pictureBoardSearch.do">
 								<div align=right>
-									<input name="keyword" style="padding:0.5rem 0.75rem; border-radius:0.25rem; border:1px solid" type="text" />
+									<input name="keyword" style="diplsy:inline-block; height:38px; vertical-align:middle; padding:0.5rem 0.75rem; border-radius:0.25rem; border:1px solid" type="text" />
 									<input type="submit" value="검색" class="btn btn-outline-dark">
 									<button type="button" id="writeBtn" style="" class="btn btn-outline-dark">글쓰기</button>
 								</div>
 							</form>
-							
-							<!-- data-xxx 의미는 없지만 데이터 저장용으로 사용할 수 있는 태그-->
+
+							<ul class="filters">
+								<li style="padding:0px;"><a href="favoritePictureList.do">추천순</a></li>
+								<li><a href="pictureMain.do">최신순</a></li>
+							</ul>
+														
+							<!-- 
+							 data-xxx 의미는 없지만 데이터 저장용으로 사용할 수 있는 태그
 							<ul class="col-md-12 filters uppercase padding-leftright-null">
 								<li data-filter="*" class="is-checked">All</li>
 								<li data-filter=".design">Design</li>
@@ -94,12 +98,12 @@ $(document).ready(function(){
 								<li data-filter=".photography">Photography</li>
 								<li data-filter=".web">Web</li>
 								<li data-filter=".app">Apps</li>
-							</ul>
+							</ul> -->
 						</div>
 					</div>
 				</div>
 					
-				<div class="projects-items equal four-columns">
+				<div style="border:solid 1px; border-color:#E6E6E6" class="projects-items equal four-columns">
 					<c:forEach items="${pictureList }" var="pictureList">
 						<div class="single-item styled one-item detailView">
 							<div class="item">

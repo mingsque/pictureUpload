@@ -2,6 +2,8 @@ package egovframework.example.picture.web;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egovframework.example.cmmn.JsonUtil;
+import egovframework.example.cmmn.service.CmmnVO;
 import egovframework.example.picture.service.PagingVO;
 import egovframework.example.picture.service.PictureService;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
@@ -332,20 +335,36 @@ public class PictureController {
 	public String pictureBoardSearch(HttpServletRequest request, ModelMap model) throws Exception {
 		
 		String keyword = request.getParameter("keyword");
-		PagingVO pageParam = new PagingVO();
-
-	
+		PagingVO pagingVO = new PagingVO();
 		
-		List<EgovMap> pictureList = pictureService.selectFavoritePictureList(pageParam);
+		CmmnVO cmmn = new CmmnVO();
 		
-		int pictureListCount = pictureService.selectPictureCount();
+		Map<Object, Object> pageParam = new HashMap<Object, Object>();
+		
+		Field[] fields = cmmn.getClass().getDeclaredFields();
+		
+		
+		for(Field field : fields){
+			field.setAccessible(true); //VO의 필드는 private이기 때문에 필드 접근가능하게 만들어줌
+			pageParam.put(field.getName(), field.get(pagingVO));
+		}
+		pageParam.put("keyword", keyword);
+		pageParam.put("rows", 16);
+		
+		System.out.println(pageParam);
+		
+		List<EgovMap> pictureList = pictureService.selectSearchPictureList(pageParam);
+		
+		System.out.println(pictureList);
+		
+		int pictureListCount = pictureService.selectSearchPictureListCount(keyword);
 
-		int page		= (int) pageParam.getPage();
-		int pageScale	= (int) pageParam.getPageScale();
+		int page		= (int) pagingVO.getPage();
+		int pageScale	= (int) pagingVO.getPageScale();
 		int pageGroup	= (page - 1) / pageScale + 1;
 		int startPage	= (pageGroup-1)*(pageScale) + 1;
 		int endPage		= pageGroup*pageScale; 
-		int lastPage	= pictureListCount/(int)pageParam.getRows() + 1;
+		int lastPage	= pictureListCount/(int) pagingVO.getRows() + 1;
 		int lastGroup	= lastPage / pageScale + 1;
 		
 		if (endPage > lastPage) {
@@ -364,14 +383,12 @@ public class PictureController {
 		model.addAttribute("startPage", startPage);
 		model.addAttribute("endPage", endPage);
 		model.addAttribute("pageGroup", pageGroup);
-		model.addAttribute("pageScale", pageParam.getPageScale());
+		model.addAttribute("pageScale", pagingVO.getPageScale());
 		model.addAttribute("lastPage", lastPage);
 		model.addAttribute("lastGroup", lastGroup);
 		model.addAttribute("viewMode", "favoriteView");
 		
-
-		
-		return "picture.main.tiles";
+		return "picture/main.tiles";
 	}
 	
 	@RequestMapping("favorite.do")

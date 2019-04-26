@@ -29,7 +29,7 @@
 </script>
 
 
-<div style="border:solid 1px; position:fixed; right:100px; top:200px; z-index:2;">
+<div style="border:solid 1px; border-color:#E6E6E6; position:fixed; right:100px; top:200px; z-index:2;">
 	
 	<div style="text-align:center">
 		<p>최근 본 사진</p>		

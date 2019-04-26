@@ -15,6 +15,11 @@
 					<textarea class="form-control" name="content" id="content" rows="8"></textarea>
 				</div>
 				
+				<div class="form-group">
+					<label for="content">해시태그</label>
+					<textarea class="form-control" name="hashtag" id="hashtag" rows="2"></textarea>
+				</div>
+				
 	 			<div class="form-group">
 					<label for="file">첨부파일</label> 
 					<input id="file" type="file" name="file"> 
