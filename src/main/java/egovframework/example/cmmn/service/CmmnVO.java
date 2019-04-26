@@ -8,6 +8,8 @@ public class CmmnVO {
 	private long startPage	= 1;
 	private long endPage	= 1;
 	private long pageScale	= 3;
+	private String keyword  = "";
+	
 	public long getRows() {
 		return rows;
 	}
@@ -43,6 +45,18 @@ public class CmmnVO {
 	}
 	public void setPageScale(long pageScale) {
 		this.pageScale = pageScale;
+	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+	@Override
+	public String toString() {
+		return "CmmnVO [rows=" + rows + ", page=" + page + ", totalPage=" + totalPage + ", startPage=" + startPage
+				+ ", endPage=" + endPage + ", pageScale=" + pageScale + ", keyword=" + keyword + "]";
 	}
 	
 }

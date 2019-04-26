@@ -9,7 +9,7 @@ $(document).ready(function(){
 	
 	$(".detailView").click(function(){
 		
-		var seqNo = $(this).children().children().eq(1).children().eq(2).attr('data-filter');
+		var seqNo = $(this).parent().find(".pictureListSeqNo").attr('data-filter');
 		
 		var popWidth = $(this).children().children().eq(0).prop('naturalWidth');
 		
@@ -59,6 +59,17 @@ $(document).ready(function(){
 	
 		document.location.href="pictureWrite.do";
 	})
+	
+	$(".pictureListWriter").click(function(){
+		
+		if($(this).hasClass("openList") === false) {
+			$(this).addClass("openList");
+			$(this).next().show();
+		} else {
+			$(this).removeClass("openList");
+			$(this).next().hide();
+		}
+	})
 })
 
 //@rnum := 0; 변수의 선언과 동시에 대입한다.
@@ -105,14 +116,18 @@ $(document).ready(function(){
 					
 				<div style="border:solid 1px; border-color:#E6E6E6" class="projects-items equal four-columns">
 					<c:forEach items="${pictureList }" var="pictureList">
-						<div class="single-item styled one-item detailView">
+						<div class="single-item styled one-item">
 							<div class="item">
-								<img src="${pictureList.url }" alt="" height="300" width="300">
-								<div class="content">
-									<h3>${pictureList.writer }</h3>
-									<p>${pictureList.title }</p>
-									<input type="hidden" data-filter="${pictureList.seqNo }"/>
+								<img class="detailView" src="${pictureList.url }" alt="" height="300" width="300">
+								<p class="detailView">${pictureList.title }</p>
+								<h3 class="pictureListWriter">${pictureList.writer }</h3>
+								<div style="display:none; float:left; border:solid 1px; border-color:#E6E6E6" class="writerAbout">
+									<ul>
+										<li><a href="follow.do">팔로우 하기</a></li>
+										<li><a href="writeBoardList.do">작성한 글</a></li>
+									</ul>
 								</div>
+								<input class="pictureListSeqNo" type="hidden" data-filter="${pictureList.seqNo }"/>
 							</div>
 						</div>
 					</c:forEach>

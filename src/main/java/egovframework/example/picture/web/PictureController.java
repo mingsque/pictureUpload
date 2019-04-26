@@ -189,7 +189,6 @@ public class PictureController {
 		return "picture/detail.pop";
 	}
 	
-	
 	@RequestMapping("pictureWrite.do")
 	public String pictureWrite() throws Exception {
 		
@@ -198,8 +197,6 @@ public class PictureController {
 	
 	@RequestMapping("pictureMain.do")
 	public String pictureMain(HttpServletRequest request, ModelMap model) throws Exception{
-		
-		System.out.println("main controller");
 		
 		PagingVO pageParam = new PagingVO();
 		
@@ -331,6 +328,47 @@ public class PictureController {
 		return "picture/main.tiles";
 	}
 
+	@RequestMapping("writeBoardList.do")
+	public String writeBoardList(HttpServletRequest request, ModelMap model) throws Exception {
+		
+		PagingVO pageParam = new PagingVO();
+		
+		List<EgovMap> pictureList = pictureService.selectFavoritePictureList(pageParam);
+		
+		int pictureListCount = pictureService.selectPictureCount();
+
+		int page		= (int) pageParam.getPage();
+		int pageScale	= (int) pageParam.getPageScale();
+		int pageGroup	= (page - 1) / pageScale + 1;
+		int startPage	= (pageGroup-1)*(pageScale) + 1;
+		int endPage		= pageGroup*pageScale; 
+		int lastPage	= pictureListCount/(int)pageParam.getRows() + 1;
+		int lastGroup	= lastPage / pageScale + 1;
+		
+		if (endPage > lastPage) {
+			
+			endPage = lastPage;
+		}
+		
+		System.out.println(pictureListCount);
+		System.out.println(startPage);
+		System.out.println(endPage);
+		System.out.println(lastGroup);
+		
+		model.addAttribute("pictureListCount", pictureListCount);
+		model.addAttribute("pictureList", pictureList);
+		model.addAttribute("page", page);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("pageGroup", pageGroup);
+		model.addAttribute("pageScale", pageParam.getPageScale());
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("lastGroup", lastGroup);
+		model.addAttribute("viewMode", "favoriteView");
+		
+		return "picture/main.tiles";
+	}
+	
 	@RequestMapping("pictureBoardSearch.do")
 	public String pictureBoardSearch(HttpServletRequest request, ModelMap model) throws Exception {
 		
