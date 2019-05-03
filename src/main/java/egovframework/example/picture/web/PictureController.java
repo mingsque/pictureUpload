@@ -194,18 +194,17 @@ public class PictureController {
 		
 		return "picture/write.tiles";
 	}
+
 	
 	@RequestMapping("pictureMain.do")
 	public String pictureMain(HttpServletRequest request, ModelMap model) throws Exception{
-		
+
+		//database 쿼리 가져오는 부분
 		PagingVO pageParam = new PagingVO();
-		
-		List<EgovMap> pictureList = pictureService.selectPictureList(pageParam);
-		
-		System.out.println(pictureList.size());
-		
+		List<EgovMap> pictureBoardList = pictureService.selectPictureList(pageParam);
 		int pictureListCount = pictureService.selectPictureCount();
 
+		//paging 처리 부분
 		int page		= (int) pageParam.getPage();
 		int pageScale	= (int) pageParam.getPageScale();
 		int pageGroup	= (page-1) / pageScale + 1;
@@ -218,16 +217,18 @@ public class PictureController {
 			
 			endPage = lastPage;
 		}
-		
-		model.addAttribute("pictureListCount", pictureListCount);
-		model.addAttribute("pictureList", pictureList);
+
 		model.addAttribute("page", page);
 		model.addAttribute("startPage", startPage);
 		model.addAttribute("endPage", endPage);
 		model.addAttribute("pageGroup", pageGroup);
-		model.addAttribute("pageScale", pageParam.getPageScale());
+		model.addAttribute("pageScale", pageScale);
 		model.addAttribute("lastPage", lastPage);
 		model.addAttribute("lastGroup", lastGroup);
+		
+		model.addAttribute("pictureListCount", pictureListCount);
+		model.addAttribute("pictureList", pictureBoardList);
+
 		model.addAttribute("viewMode", "lastView");
 		
 		return "picture/main.tiles";
@@ -267,11 +268,6 @@ public class PictureController {
 			
 			endPage = lastPage;
 		}
-		
-		System.out.println(pictureListCount);
-		System.out.println(startPage);
-		System.out.println(endPage);
-		System.out.println(lastGroup);
 		
 		model.addAttribute("pictureListCount", pictureListCount);
 		model.addAttribute("pictureList", pictureList);
@@ -328,15 +324,19 @@ public class PictureController {
 		return "picture/main.tiles";
 	}
 
-	@RequestMapping("writeBoardList.do")
-	public String writeBoardList(HttpServletRequest request, ModelMap model) throws Exception {
+	@RequestMapping("writerPictureBoardList.do")
+	public String writerPictureBoardList(HttpServletRequest request, ModelMap model) throws Exception {
 		
 		PagingVO pageParam = new PagingVO();
 		
-		List<EgovMap> pictureList = pictureService.selectFavoritePictureList(pageParam);
+		String writer = request.getParameter("writer");
+		pageParam.setKeyword(writer);
 		
-		int pictureListCount = pictureService.selectPictureCount();
+		System.out.println(pageParam.getKeyword());
+		List<EgovMap> pictureList = pictureService.selectPictureListByWriter(pageParam);
+		int pictureListCount = pictureService.selectPictureListCountByWriter(writer);
 
+		System.out.println(pictureListCount);
 		int page		= (int) pageParam.getPage();
 		int pageScale	= (int) pageParam.getPageScale();
 		int pageGroup	= (page - 1) / pageScale + 1;
@@ -349,12 +349,7 @@ public class PictureController {
 			
 			endPage = lastPage;
 		}
-		
-		System.out.println(pictureListCount);
-		System.out.println(startPage);
-		System.out.println(endPage);
-		System.out.println(lastGroup);
-		
+	
 		model.addAttribute("pictureListCount", pictureListCount);
 		model.addAttribute("pictureList", pictureList);
 		model.addAttribute("page", page);
@@ -371,7 +366,8 @@ public class PictureController {
 	
 	@RequestMapping("pictureBoardSearch.do")
 	public String pictureBoardSearch(HttpServletRequest request, ModelMap model) throws Exception {
-		
+
+		//VO의 정보를 꺼내서 맵에 세팅하고 맵에 원하는 정보를 더 넣는 방법
 		String keyword = request.getParameter("keyword");
 		PagingVO pagingVO = new PagingVO();
 		
@@ -380,7 +376,6 @@ public class PictureController {
 		Map<Object, Object> pageParam = new HashMap<Object, Object>();
 		
 		Field[] fields = cmmn.getClass().getDeclaredFields();
-		
 		
 		for(Field field : fields){
 			field.setAccessible(true); //VO의 필드는 private이기 때문에 필드 접근가능하게 만들어줌

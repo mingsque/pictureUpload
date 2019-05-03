@@ -14,10 +14,14 @@ $(document).ready(function(){
 	<div id="home-wrap" class="content-section">
 		<div class="container">
 			<section id="projects" data-isotope="load-simple" class="page padding-bottom-null">
-					<c:forEach items="${followList}" var="followList">
-						<h3 style="margin-bottom:10px;margin-top:10px; font-family:Sans-Serif;">${followList.follow}</h3>
+			
+			
+				<h3 style="margin-bottom:10px;margin-top:10px; font-family:Sans-Serif;">나를 팔로우 한 사람</h3>
+					<c:forEach items="${followedList}" var="followedList">
+						<p>${followedList.id}</p>
 						<div style="border:solid 1px; border-color:#E6E6E6" class="projects-items equal four-columns">
-						<c:forEach items="${followBoardList }" var="followBoardList">
+						
+						<%-- <c:forEach items="${followBoardList }" var="followBoardList">
 							<c:if test="${followList.follow eq followBoardList.writer}">
 								<div class="single-item styled one-item">
 									<div class="item">
@@ -33,8 +37,8 @@ $(document).ready(function(){
 										<input class="pictureListSeqNo" type="hidden" data-filter="${followBoardList.seqNo }"/>
 									</div>
 								</div>
-							</c:if>
-						</c:forEach>
+							</c:if> 
+						</c:forEach>--%>
 						</div>					
 					</c:forEach>
 			</section>

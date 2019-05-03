@@ -2,4 +2,41 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="egovframework.example.follow.service.impl.FollowMapper">
 
+	<insert id="insertFollow" parameterType="map">
+		INSERT INTO FOLLOW (
+			ID,
+			FOLLOW
+		) VALUES (
+			#{id},
+			#{followId}
+		)
+	</insert>
+	
+	<select id="selectFollowList" parameterType="String" resultType="egovMap">
+		SELECT *
+		FROM	follow
+		WHERE	ID = '${_parameter}' AND USE_YN = 'Y'
+		ORDER BY SEQ_NO DESC
+	</select>
+	
+	<select id="selectFollowedList" parameterType="String" resultType="egovMap">
+		SELECT *
+		FROM	follow
+		WHERE	FOLLOW = '${_parameter}' AND USE_YN = 'Y'
+		ORDER BY SEQ_NO DESC
+	</select>
+	
+
+	<select id="selectFollowBoardList" parameterType="String" resultType="egovMap">
+		SELECT *
+		FROM
+			(SELECT *
+			FROM	follow
+			WHERE	ID = '${_parameter}' AND USE_YN = 'Y') A
+		LEFT OUTER JOIN PICTURE_BOARD B
+		ON A.follow = B.WRITER
+		WHERE B.USE_YN = 'Y'
+		ORDER BY B.SEQ_NO DESC
+	</select>
+
 </mapper>

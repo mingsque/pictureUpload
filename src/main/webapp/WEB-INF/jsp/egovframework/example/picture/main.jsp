@@ -60,16 +60,63 @@ $(document).ready(function(){
 		document.location.href="pictureWrite.do";
 	})
 	
-	$(".pictureListWriter").click(function(){
-		
-		if($(this).hasClass("openList") === false) {
+	
+	var openingWriter;
+	$(".pictureListWriter").click(function(event){
+
+		//맨처음
+		if(typeof openingWriter === "undefined") {
 			$(this).addClass("openList");
-			$(this).next().show();
-		} else {
-			$(this).removeClass("openList");
-			$(this).next().hide();
+			$(this).next().css("display","block");
+			openingWriter = $(this);
+		} else { //그 후
+			if(openingWriter.get(0) === $(this).get(0)){
+				if($(this).hasClass("openList")){
+					openingWriter.removeClass("openList");
+					openingWriter.next().css("display","none");
+				} else {
+					openingWriter.addClass("openList");
+					openingWriter.next().css("display","block");	
+				}
+			} else {
+				openingWriter.removeClass("openList");
+				openingWriter.next().css("display","none");
+				$(this).addClass("openList");
+				$(this).next().css("display","block");
+				openingWriter = $(this);		
+				
+			}
+			
+		
 		}
+		
 	})
+	
+	$(".follow").click(function(){
+		
+		
+		var followId = $(this).parent().parent().parent().prev().text();
+		console.log(followId);
+		
+		var form = {followId : followId};		
+		
+		$.ajax({
+			url			:	"follow.do",
+			type		:	"post",
+			data		:	JSON.stringify(form), //json형태의 String임
+			contentType :	"application/json",
+			async: false, //ajax 동기 비동기, 리턴값이 돌아오는걸 기다림
+			success : function(data) {
+				var jObj = JSON.parse(data);
+				if (jObj.result === "success") {
+					alert("팔로우 하였습니다.")
+				}
+				if (jObj.result === "FALSE") {
+					alert("실패하였습니다.");
+				}
+			}
+		});
+	});
 })
 
 //@rnum := 0; 변수의 선언과 동시에 대입한다.
@@ -84,8 +131,6 @@ $(document).ready(function(){
 				<div class="row no-margin text-left">
 					<div class="col-sm-12 padding-leftright-null">
 						<div class="filter-wrap left">
-
-
 							<h3>사진 게시판</h3>
 							<form action="pictureBoardSearch.do">
 								<div align=right>
@@ -111,7 +156,7 @@ $(document).ready(function(){
 								<li data-filter=".app">Apps</li>
 							</ul> -->
 						</div>
-					</div>
+					</div>	
 				</div>
 					
 				<div style="border:solid 1px; border-color:#E6E6E6" class="projects-items equal four-columns">
@@ -120,11 +165,11 @@ $(document).ready(function(){
 							<div class="item">
 								<img class="detailView" src="${pictureList.url }" alt="" height="300" width="300">
 								<p class="detailView">${pictureList.title }</p>
-								<h3 class="pictureListWriter">${pictureList.writer }</h3>
-								<div style="display:none; float:left; border:solid 1px; border-color:#E6E6E6" class="writerAbout">
-									<ul>
-										<li><a href="follow.do">팔로우 하기</a></li>
-										<li><a href="writeBoardList.do">작성한 글</a></li>
+								<p class="pictureListWriter">${pictureList.writer }</p>
+								<div style="display:none;border:solid 1px; border-color:#E6E6E6" class="writerAbout">
+									<ul style="width:30%;font-size:12px">
+										<li><a class="follow" href="#">팔로우 하기</a></li>
+										<li><a href="writerPictureBoardList.do?writer=${pictureList.writer }">작성한 글</a></li>
 									</ul>
 								</div>
 								<input class="pictureListSeqNo" type="hidden" data-filter="${pictureList.seqNo }"/>

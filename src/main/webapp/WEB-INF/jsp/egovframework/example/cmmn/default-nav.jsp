@@ -89,7 +89,7 @@
 						<ul>
 							<li style="display:inline-block; margin:10px">${sessionScope.id }</li>
 							<li style="display:inline-block; margin:10px"><a href="followMain.do">팔로우</a></li>
-							<li style="display:inline-block; margin:10px"><a href="#">팔로워</a></li>			
+							<li style="display:inline-block; margin:10px"><a href="followed.do">팔로워</a></li>			
 						</ul>
 					</div>
 				</nav>

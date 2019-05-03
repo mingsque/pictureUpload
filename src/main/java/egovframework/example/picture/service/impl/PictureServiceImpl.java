@@ -102,4 +102,16 @@ public class PictureServiceImpl implements PictureService {
 		return pictureMapper.selectSearchPictureListCount(keyword);
 	}
 
+	@Override
+	public int selectPictureListCountByWriter(String writer) throws Exception {
+		// TODO Auto-generated method stub
+		return pictureMapper.selectPictureListCountByWriter(writer);
+	}
+
+	@Override
+	public List<EgovMap> selectPictureListByWriter(PagingVO pageParam) throws Exception {
+		// TODO Auto-generated method stub
+		return pictureMapper.selectPictureListByWriter(pageParam);
+	}
+
 }

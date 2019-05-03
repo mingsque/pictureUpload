@@ -22,6 +22,30 @@
 		WHERE USE_YN = 'Y'
 	</select>
 	
+	<select id="selectPictureListByWriter" parameterType="pagingVO" resultType="egovMap">	
+		SELECT AA.*
+		FROM
+			(SELECT A.* , floor( (RNUM-1) / #{rows} + 1 ) as pageNumber
+			 FROM 	
+				(SELECT B.* , @rnum := @rnum + 1 as RNUM , date_format(B.MOD_DATE, '%Y-%m-%d %H:%i')
+				 FROM (	
+				 		SELECT *
+						FROM PICTURE_BOARD
+						WHERE WRITER = '${keyword}' AND USE_YN = 'Y')B , (SELECT @rnum := 0) R
+						ORDER BY SEQ_NO DESC
+				)A
+			)AA	
+		WHERE AA.pageNumber = #{page};	
+	</select>
+	
+	
+	<select id="selectPictureListCountByWriter" parameterType="string" resultType="int">
+		SELECT count(*) AS TOTAL_COUNT
+		FROM PICTURE_BOARD
+		WHERE USE_YN = 'Y' AND WRITER = #{_parameter};
+	</select>
+	
+	
 	<select id="selectFavoritePictureList" parameterType="pagingVO" resultType="egovMap">	
 		SELECT AA.*
 		FROM
@@ -54,7 +78,7 @@
 				 		SELECT *
 						FROM PICTURE_BOARD
 						WHERE title LIKE '%${keyword}%' AND USE_YN = 'Y')B , (SELECT @rnum := 0) R
-						ORDER BY SEC_NO DESC
+						ORDER BY SEQ_NO DESC
 				)A
 			)AA	
 		WHERE AA.pageNumber = #{page};
@@ -175,5 +199,7 @@
 		FROM	PICTURE_BOARD_FAVORITE
 		WHERE 	MEMBER_ID = #{id} AND BOARD_NO = #{seqNo} ;
 	</select>
+	
+	
 	
 </mapper>

@@ -40,4 +40,8 @@ public interface PictureMapper {
 
 	int selectSearchPictureListCount(String keyword) throws Exception;
 
+	int selectPictureListCountByWriter(String writer) throws Exception;
+
+	List<EgovMap> selectPictureListByWriter(PagingVO pageParam) throws Exception;
+
 }
