@@ -1,5 +1,6 @@
 package egovframework.example.login.web;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.security.KeyFactory;
@@ -8,9 +9,11 @@ import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.SecureRandom;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.crypto.Cipher;
@@ -24,6 +27,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egovframework.example.cmmn.JsonUtil;
 import egovframework.example.login.service.LoginService;
@@ -200,34 +205,114 @@ public class LoginController {
 		return "login/modify.tiles";
 	}
 
-	@RequestMapping("cart.do")
-	public String cart() {
-
-		return "login/cart.tiles";
-	}
-
 	//회원가입 userVO사용하였음.
 	//뷰에서 올라오는 폼의 name과 vo의 변수명이 매칭되어야함
 	//vo는 초기화가 가능하므로 null에 대한 처리를  vo에서 할 수 있을것
 	@RequestMapping("registerAction.do")
-	public String registerResult(ModelMap model, @ModelAttribute UserVO uservo)	throws Exception {
-			
-		System.out.println(uservo.toString());
-		loginService.selectRegisterResultService(uservo);
-		
+	public String registerResult(MultipartHttpServletRequest request, ModelMap model)	throws Exception {
+		//String filename = uservo.getProfile_picture();
+		System.out.println("before");
+		String path = "C:\\";
+		File folder = new File(path, "myShoppingUpload");
 
-		return "login/registerAction.tiles";
+		Map<String, String> param = new HashMap();
+		
+		Enumeration names = request.getParameterNames();
+		
+		while(names.hasMoreElements()){
+			String name = names.nextElement().toString();
+			System.out.println(name);
+			System.out.println(request.getParameter(name));
+			param.put(name, request.getParameter(name));
+		}
+		
+		//폴더나 파일이 있는지 확인
+		if (!folder.exists()) {
+			try{
+
+				folder.mkdir();
+			} catch(Exception e){
+				
+				e.getStackTrace();
+			}
+		}
+		MultipartFile file	= request.getFile("profile_picture");
+		UUID uniqueCode		= UUID.randomUUID();
+		String filename 	= uniqueCode + " " + file.getOriginalFilename();
+		
+		System.out.println("middle");
+		try {
+			
+			File saveFile = new File(path, "myShoppingUpload\\"+filename);
+			file.transferTo(saveFile);
+			System.out.println(saveFile.getAbsolutePath());
+		} catch(Exception e) {
+			
+			e.printStackTrace();
+		}
+		param.put("profile_picture","uploaded//" + filename);
+		//System.out.println(uservo.toString());
+		loginService.selectRegisterResultService(param);
+		
+		System.out.println("after");
+		return "redirect:/login.do";
 	}
 	
-	@RequestMapping("modifyAction")
-	public String modifyResult(ModelMap model, @ModelAttribute UserVO uservo) throws Exception {
+	@RequestMapping("modifyAction.do")
+	public String modifyResult(MultipartHttpServletRequest request,  ModelMap model) throws Exception {
+
 		
-		System.out.println(uservo.toString());
-		//loginService.selectRegisterResultService(uservo);
+		System.out.println("modifyAction");
+		String path = "C:\\";
+		File folder = new File(path, "myShoppingUpload");
+
+		Map<String, String> param = new HashMap();
+		Enumeration names = request.getParameterNames();
 		
-		loginService.updateUserInfo(uservo);
+		while(names.hasMoreElements()){
+			String name = names.nextElement().toString();
+			System.out.println(name);
+			System.out.println(request.getParameter(name));
+			param.put(name, request.getParameter(name));
+		}
 		
-		return "login/modifyAction.tiles";
+		//폴더나 파일이 있는지 확인
+		if (!folder.exists()) {
+			try{
+
+				folder.mkdir();
+			} catch(Exception e){
+				
+				e.getStackTrace();
+			}
+		}
+		
+		System.out.println(request.getFile("profile_picture") + "======================");
+		
+		MultipartFile file	= request.getFile("profile_picture");
+		
+		param.put("profile_picture", null);
+		
+		if(!file.isEmpty()){
+			UUID uniqueCode		= UUID.randomUUID();
+			String filename 	= uniqueCode + " " + file.getOriginalFilename();
+			
+			try {
+				
+				File saveFile = new File(path, "myShoppingUpload\\"+filename);
+				file.transferTo(saveFile);
+				System.out.println(saveFile.getAbsolutePath());
+			} catch(Exception e) {
+				
+				e.printStackTrace();
+			}
+			
+			param.put("profile_picture","uploaded//" + filename);
+		}
+		
+		loginService.updateUserInfo(param);
+		
+		return "redirect:/main.do";
 	}
 
 

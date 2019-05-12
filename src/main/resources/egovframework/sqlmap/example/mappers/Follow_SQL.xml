@@ -20,8 +20,10 @@
 	</select>
 	
 	<select id="selectFollowedList" parameterType="String" resultType="egovMap">
-		SELECT *
-		FROM	follow
+		SELECT	A.*,B.COMMENT, B.PROFILE_PICTURE
+		FROM	follow A
+		LEFT OUTER JOIN USER_TB B
+		ON A.ID = B.ID
 		WHERE	FOLLOW = '${_parameter}' AND USE_YN = 'Y'
 		ORDER BY SEQ_NO DESC
 	</select>

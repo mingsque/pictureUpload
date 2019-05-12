@@ -276,7 +276,7 @@ function daumPostCode() {
 			</div>
 			<div class="widget-content">
 				<div class="padd">
-					<form class="form-horizontal" method="post" id="frm">
+					<form class="form-horizontal" method="post" enctype="multipart/form-data" id="frm">
 						<!-- Registration form starts -->
 						<!-- Userid -->
 						<div class="form-group">
@@ -376,6 +376,23 @@ function daumPostCode() {
 								</label>
 							</div>
 						</div>
+						
+						<!-- comment -->
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="comment">한 마디</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="comment" name="comment">
+							</div>
+						</div>
+						
+						<!-- 프로필 사진 -->
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="profile_picture">프로필 사진</label>
+							<div class="col-sm-10">
+								<input type="file" id="profile_picture" name="profile_picture">
+							</div>
+						</div>
+						
 						
 						<!-- Accept box and button s-->
 						<div class="form-group">

@@ -11,7 +11,7 @@
 		FROM USER_TB
 	</select>
 	
-	<insert id="selectRegisterResultService" parameterType="userVO">
+	<insert id="selectRegisterResultService" parameterType="map">
 	
 		INSERT INTO USER_TB(		
 			ID,
@@ -22,7 +22,9 @@
 			SEX,
 			POST_NUMBER,
 			ADDRESS_DETAIL,
-			ADDRESS
+			ADDRESS,
+			COMMENT,
+			PROFILE_PICTURE
 			)
 		 
 		VALUES (
@@ -34,11 +36,13 @@
 			#{sex},
 			#{post_number},
 			#{address_detail},
-			#{address}
+			#{address},
+			#{comment},
+			#{profile_picture}
 		);
 	</insert>
 	
-	<update id="updateUserInfo" parameterType="userVO">
+	<update id="updateUserInfo" parameterType="map">
 	
 		UPDATE USER_TB 
 		
@@ -50,8 +54,11 @@
 			SEX				= #{sex},
 			POST_NUMBER 	= #{post_number},
 			ADDRESS_DETAIL 	= #{address_detail},
-			ADDRESS 		= #{address}
-		
+			ADDRESS 		= #{address},
+			COMMENT			= #{comment}
+			<if test = "profile_picture != null">
+				,PROFILE_PICTURE = #{profile_picture}
+			</if>
 		WHERE ID = #{id};
 	</update>
 	
@@ -64,15 +71,7 @@
 	</select>
 	
 	<select id="selectUserInfo" parameterType="String" resultType="userVO">
-		SELECT	ID,
-				PASSWORD,
-				NAME,
-				E_MAIL,
-				PHONE_NUMBER,
-				ADDRESS,
-				ADDRESS_DETAIL,
-				POST_NUMBER,
-				SEX
+		SELECT	*
 		FROM USER_TB
 		
 		<where>

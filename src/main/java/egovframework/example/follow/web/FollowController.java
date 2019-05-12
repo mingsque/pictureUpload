@@ -77,6 +77,7 @@ public class FollowController {
 
 		List<EgovMap> followedList = followService.selectFollowedList(id);
 
+		
 		System.out.println("followContoller");
 		System.out.println(followedList);
 		

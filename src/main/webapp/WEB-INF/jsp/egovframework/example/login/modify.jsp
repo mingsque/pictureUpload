@@ -31,7 +31,7 @@ $(function(){
 	$("#address").val("${userInfo.address}");
 	$("#address_detail").val("${userInfo.address_detail}");
 	$("#post_number").val("${userInfo.post_number}");
-	
+	$("#comment").val("${userInfo.comment}");
 	var sex = "${userInfo.sex}";
 	if(sex === "남") {
 		$("#male").attr("checked",true);
@@ -234,7 +234,7 @@ function daumPostCode() {
 			</div>
 			<div class="widget-content">
 				<div class="padd">
-					<form class="form-horizontal" method="post" id="frm">
+					<form class="form-horizontal" method="post" enctype="multipart/form-data" id="frm">
 						<!-- Registration form starts -->
 						<!-- Userid -->
 						<div class="form-group">
@@ -328,6 +328,22 @@ function daumPostCode() {
 								<label class="radio-inline">
 									<input type="radio" name="sex" value="여" id="female">여
 								</label>
+							</div>
+						</div>
+						
+						<!-- comment -->
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="comment">한 마디</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="comment" name="comment">
+							</div>
+						</div>
+						
+						<!-- 프로필 사진 -->
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="profile_picture">프로필 사진</label>
+							<div class="col-sm-10">
+								<input type="file" id="profile_picture" name="profile_picture">
 							</div>
 						</div>
 						

@@ -9,8 +9,10 @@ public class UserVO {
 	private String phone_number;
 	private String sex;
 	private String address;
-	private String address_detail = "";
+	private String address_detail;
 	private String post_number;
+	private String comment;
+	private String profile_picture;
 	
 	public UserVO() {
 		this.id 			= "";
@@ -18,10 +20,35 @@ public class UserVO {
 		this.name 			= "";
 		this.e_mail 		= "";
 		this.phone_number 	= "";
-		this.sex = "";
+		this.sex 			= "";
 		this.address 		= "";
 		this.address_detail = "";
 		this.post_number 	= "";
+		this.comment		= "";
+		this.profile_picture= "";	}
+
+	@Override
+	public String toString() {
+		return "UserVO [id=" + id + ", password=" + password + ", name=" + name + ", e_mail=" + e_mail
+				+ ", phone_number=" + phone_number + ", sex=" + sex + ", address=" + address + ", address_detail="
+				+ address_detail + ", post_number=" + post_number + ", comment=" + comment + ", profile_picture="
+				+ profile_picture + "]";
+	}
+
+	public String getProfile_picture() {
+		return profile_picture;
+	}
+
+	public void setProfile_picture(String profile_picture) {
+		this.profile_picture = profile_picture;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 	public String getId() {
@@ -94,13 +121,6 @@ public class UserVO {
 
 	public void setPhone_number(String phone_number) {
 		this.phone_number = phone_number;
-	}
-
-	@Override
-	public String toString() {
-		return "UserVO [id=" + id + ", password=" + password + ", name=" + name + ", e_mail=" + e_mail
-				+ ", phone_number=" + phone_number + ", sex=" + sex + ", address=" + address + ", address_detail="
-				+ address_detail + ", post_number=" + post_number + "]";
 	}
 
 		

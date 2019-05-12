@@ -1,6 +1,8 @@
 package egovframework.example.login.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -23,9 +25,9 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Override
-	public void selectRegisterResultService(UserVO uservo) throws Exception {
+	public void selectRegisterResultService(Map<String,String> param) throws Exception {
 		// TODO Auto-generated method stub
-		loginMapper.selectRegisterResultService(uservo);
+		loginMapper.selectRegisterResultService(param);
 	}
 
 	@Override
@@ -41,9 +43,9 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Override
-	public void updateUserInfo(UserVO uservo) throws Exception {
+	public void updateUserInfo(Map<String,String> param) throws Exception {
 		// TODO Auto-generated method stub
-		loginMapper.updateUserInfo(uservo);
+		loginMapper.updateUserInfo(param);
 	}
 
 }
