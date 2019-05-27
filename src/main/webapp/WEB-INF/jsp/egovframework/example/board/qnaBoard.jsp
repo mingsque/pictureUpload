@@ -33,8 +33,7 @@
 <body>
 	<div class="container">
 		<h2 class="top">FAQ게시판</h2>
-		<input type="text" id="myInput" onkeyup="myFunction()" placeholder="궁금하신 내용을 입력해 주세요" title="Type in a name">
-		
+		<!-- <input type="text" id="myInput" onkeyup="myFunction()" placeholder="궁금하신 내용을 입력해 주세요" title="Type in a name"> -->
 		<table class="table table-sm table-hover">
 			<thead>
 				<tr>
